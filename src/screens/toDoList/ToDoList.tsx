@@ -1,11 +1,12 @@
 import React from 'react';
-import {FlatList, Modal, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Modal, Text, View} from 'react-native';
 import ToDoListRow from './components/ToDoListRow';
 import FloatingButton from '../../ui/FloatingButton';
 import {useToDoList} from './useToDoList';
 import EditModal from '../../widgets/modal/EditModal';
 import {ToDoListItem} from './types';
 import {getUUIid} from './utils';
+import {styles} from './styles';
 
 const renderItem = (
   item: ToDoListItem,
@@ -55,17 +56,3 @@ export default function ToDoList() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  textHeader: {
-    fontSize: 24,
-    textAlign: 'center',
-    fontWeight: '900',
-    marginBottom: 16,
-    marginTop: 8,
-  },
-});
