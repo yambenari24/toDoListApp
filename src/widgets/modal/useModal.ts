@@ -1,15 +1,30 @@
-import {useCallback, useState} from 'react';
+import {useCallback, useRef} from 'react';
+import {generateUniqueId} from '../../screens/toDoList/utils';
+import {ToDoListItemProps} from '../../screens/toDoList';
 
-export function useModal() {
-  const [modalVisible, setModalVisible] = useState(false);
+export function useModal(
+  addItem: (item: ToDoListItemProps) => void,
+  closeModal: () => void,
+) {
+  const inputRef = useRef<string>('');
 
-  const openModal = useCallback(function handleOpenModel() {
-    setModalVisible(true);
-  }, []);
+  const handleChangeText = useCallback(
+    (text: string) => {
+      inputRef.current = text;
+    },
+    [inputRef],
+  );
 
-  const closeModal = useCallback(function handleCloseModal() {
-    setModalVisible(false);
-  }, []);
+  const handleAddItem = useCallback(
+    function addItemFunc() {
+      const task = inputRef.current;
+      if (task?.trim()) {
+        addItem({text: task, uuid: generateUniqueId()});
+        closeModal();
+      }
+    },
+    [addItem, closeModal, inputRef],
+  );
 
-  return {modalVisible, openModal, closeModal};
+  return {inputRef, handleChangeText, handleAddItem};
 }

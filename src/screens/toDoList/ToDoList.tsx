@@ -1,26 +1,38 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import {FlatList, Modal, StyleSheet, Text, View} from 'react-native';
 import ToDoListRow from './components/ToDoListRow';
 import FloatingButton from '../../ui/FloatingButton';
 import {useToDoList} from './useToDoList';
 import EditModal from '../../widgets/modal/EditModal';
-import {useModal} from '../../widgets/modal/useModal';
-import {MINUS, PLUS} from './constant';
+import {ToDoListItemProps} from './types';
 
+const renderItem = (
+  item: ToDoListItemProps,
+  handleDeleteItem: (item: ToDoListItemProps) => void,
+  openRow: string | null,
+  handleRowSwipe: (uuid: string) => void,
+) => {
+  return (
+    <ToDoListRow
+      toDoListItem={item}
+      deleteItem={() => handleDeleteItem(item)}
+      isOpen={openRow === item.uuid}
+      onSwipe={() => handleRowSwipe(item.uuid)}
+    />
+  );
+};
 export default function ToDoList() {
   const {
+    openModal,
+    closeModal,
+    modalVisible,
     toDoListArray,
     handleAddItem,
     handleDeleteItem,
     openRow,
     handleRowSwipe,
+    buttonState,
   } = useToDoList();
-
-  const {modalVisible, openModal, closeModal} = useModal();
-
-  const buttonState = useMemo(() => {
-    return modalVisible ? MINUS : PLUS;
-  }, [modalVisible]);
 
   return (
     <View style={styles.container}>
@@ -28,16 +40,9 @@ export default function ToDoList() {
       <FlatList
         keyExtractor={item => item.uuid}
         data={toDoListArray}
-        renderItem={({item}) => {
-          return (
-            <ToDoListRow
-              toDoListItem={item}
-              deleteItem={() => handleDeleteItem(item)}
-              isOpen={openRow === item.uuid}
-              onSwipe={() => handleRowSwipe(item.uuid)}
-            />
-          );
-        }}
+        renderItem={({item}) =>
+          renderItem(item, handleDeleteItem, openRow, handleRowSwipe)
+        }
       />
       <FloatingButton onPress={openModal} title={buttonState} />
       <Modal visible={modalVisible} animationType="fade" transparent={true}>

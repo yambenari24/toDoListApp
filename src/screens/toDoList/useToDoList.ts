@@ -1,22 +1,31 @@
-import {useCallback, useState} from 'react';
-import {ToDoListItem} from './index';
+import {useCallback, useMemo, useState} from 'react';
+import {ToDoListItemProps} from './index';
 import {Alert} from 'react-native';
 import {
   ALERT_BUTTON_SUBTITLE,
   ALERT_BUTTON_TITLE,
   CANCEL_BUTTON,
+  MINUS,
+  PLUS,
   YES_BUTTON,
 } from './constant';
 
 export function useToDoList() {
-  const generateUniqueId = () => `${Date.now()}-${Math.random()}`;
-  const [toDoListArray, setToDoListArray] = useState<ToDoListItem[]>([]);
+  const [toDoListArray, setToDoListArray] = useState<ToDoListItemProps[]>([]);
   const [openRow, setOpenRow] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openModal = useCallback(function handleOpenModel() {
+    setModalVisible(true);
+  }, []);
+
+  const closeModal = useCallback(function handleCloseModal() {
+    setModalVisible(false);
+  }, []);
 
   const handleAddItem = useCallback(
-    function handleAddItem(item: ToDoListItem) {
+    function handleAddItem(item: ToDoListItemProps) {
       const copyToDoListArray = [...toDoListArray];
-      item.uuid = generateUniqueId();
       copyToDoListArray.unshift(item);
       setToDoListArray(copyToDoListArray);
     },
@@ -24,7 +33,7 @@ export function useToDoList() {
   );
 
   const deleteItem = useCallback(
-    function deleteItem(item: ToDoListItem) {
+    function deleteItem(item: ToDoListItemProps) {
       const copyToDoListArray = [...toDoListArray];
       const indexToDelete = copyToDoListArray.findIndex(
         task => task.uuid === item.uuid,
@@ -45,7 +54,7 @@ export function useToDoList() {
   );
 
   const handleDeleteItem = useCallback(
-    function handleDeleteItem(item: ToDoListItem) {
+    function handleDeleteItem(item: ToDoListItemProps) {
       Alert.alert(
         ALERT_BUTTON_TITLE,
         ALERT_BUTTON_SUBTITLE,
@@ -69,11 +78,19 @@ export function useToDoList() {
     [deleteItem, handleRowSwipe],
   );
 
+  const buttonState = useMemo(() => {
+    return modalVisible ? MINUS : PLUS;
+  }, [modalVisible]);
+
   return {
+    openModal,
+    closeModal,
+    modalVisible,
     toDoListArray,
     handleAddItem,
     handleDeleteItem,
     openRow,
     handleRowSwipe,
+    buttonState,
   };
 }

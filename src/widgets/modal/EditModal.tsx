@@ -6,10 +6,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useCallback, useRef} from 'react';
+import React from 'react';
 import {ADD_TITLE, X_IMG} from '../../screens/toDoList/constant';
 import {ToDoListItemProps} from '../../screens/toDoList';
-import {generateUniqueId} from '../../screens/toDoList/utils';
+import {useModal} from './useModal';
 
 export default function EditModal({
   addItem,
@@ -18,18 +18,8 @@ export default function EditModal({
   addItem: (toDoListItem: ToDoListItemProps) => void;
   closeModal: () => void;
 }) {
-  const inputRef = useRef<string>('');
+  const {handleChangeText, handleAddItem} = useModal(addItem, closeModal);
 
-  const handleAddItem = useCallback(
-    function addItemFunc() {
-      const task = inputRef.current;
-      if (task?.trim()) {
-        addItem({text: task, uuid: generateUniqueId()});
-        closeModal();
-      }
-    },
-    [addItem, closeModal],
-  );
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
@@ -38,9 +28,7 @@ export default function EditModal({
         </TouchableOpacity>
         <TextInput
           style={styles.inputContainer}
-          onChangeText={text => {
-            inputRef.current = text;
-          }}
+          onChangeText={handleChangeText}
         />
         <View style={styles.buttonContainer}>
           <Button onPress={handleAddItem} title={ADD_TITLE} />
