@@ -7,13 +7,12 @@ import {
   View,
 } from 'react-native';
 import React, {useCallback, useRef} from 'react';
-import {ToDoListItem} from '../../screens/toDoList/types';
 
 export default function EditModal({
   addItem,
   closeModal,
 }: {
-  addItem: (toDoListItem: ToDoListItem) => void;
+  addItem: (ToDoListItem: any) => void;
   closeModal: () => void;
 }) {
   const inputRef = useRef<string>('');
@@ -22,10 +21,7 @@ export default function EditModal({
     function addItemFunc() {
       const task = inputRef.current;
       if (task?.trim()) {
-        addItem({
-          text: task,
-          uuid: '',
-        });
+        addItem({text: task});
         closeModal();
       }
     },
