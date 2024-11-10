@@ -1,14 +1,14 @@
 import React from 'react';
-import {FlatList, ListRenderItem, Modal, Text, View} from 'react-native';
+import {Modal, Text, View} from 'react-native';
 import ToDoListRow from './components/ToDoListRow';
 import FloatingButton from '../../ui/FloatingButton';
 import {useToDoList} from './useToDoList';
-import {getUUIid} from './utils';
 import {styles} from './styles';
 import {AddItemModal} from '../../widgets/modal';
 import {ToDoListRowProps} from './components';
+import {GestureHandlerRootView, ScrollView} from 'react-native-gesture-handler';
 
-const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
+const renderItem = (item: ToDoListRowProps) => {
   return (
     <ToDoListRow
       toDoListItem={item.toDoListItem}
@@ -17,6 +17,10 @@ const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
       onSwipe={item.onSwipe}
     />
   );
+};
+
+const renderToDoListItems = (items: ToDoListRowProps[]) => {
+  return items.map(item => renderItem(item));
 };
 
 export default function ToDoList() {
@@ -30,17 +34,17 @@ export default function ToDoList() {
   } = useToDoList();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.textHeader}>To Do List</Text>
-      <FlatList
-        keyExtractor={getUUIid}
-        data={enrichToDoListArray}
-        renderItem={renderItem}
-      />
-      <FloatingButton onPress={openModal} title={buttonState} />
-      <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <AddItemModal onPress={onItemAdd} closeModal={closeModal} />
-      </Modal>
-    </View>
+    <GestureHandlerRootView>
+      <View style={styles.container}>
+        <Text style={styles.textHeader}>To Do List</Text>
+        <ScrollView style={styles.scrollContainer}>
+          {renderToDoListItems(enrichToDoListArray)}
+        </ScrollView>
+        <FloatingButton onPress={openModal} title={buttonState} />
+        <Modal visible={modalVisible} animationType="fade" transparent={true}>
+          <AddItemModal onPress={onItemAdd} closeModal={closeModal} />
+        </Modal>
+      </View>
+    </GestureHandlerRootView>
   );
 }
