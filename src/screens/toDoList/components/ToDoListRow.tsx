@@ -9,6 +9,7 @@ import {
   PanResponder,
   Image,
 } from 'react-native';
+import {BIN_IMG} from '../constant';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -73,10 +74,7 @@ const ToDoListRow = ({
     <View style={styles.rowContainer}>
       <View style={styles.deleteBackground}>
         <TouchableOpacity onPress={deleteItem}>
-          <Image
-            style={styles.imageBin}
-            source={require('../../../assets/bin.png')}
-          />
+          <Image style={styles.imageBin} source={BIN_IMG} />
         </TouchableOpacity>
       </View>
       <Animated.View

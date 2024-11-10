@@ -7,12 +7,15 @@ import {
   View,
 } from 'react-native';
 import React, {useCallback, useRef} from 'react';
+import {ADD_TITLE, X_IMG} from '../../screens/toDoList/constant';
+import {ToDoListItem} from '../../screens/toDoList';
+import {generateUniqueId} from '../../screens/toDoList/utils';
 
 export default function EditModal({
   addItem,
   closeModal,
 }: {
-  addItem: (ToDoListItem: any) => void;
+  addItem: (toDoListItem: ToDoListItem) => void;
   closeModal: () => void;
 }) {
   const inputRef = useRef<string>('');
@@ -21,7 +24,7 @@ export default function EditModal({
     function addItemFunc() {
       const task = inputRef.current;
       if (task?.trim()) {
-        addItem({text: task});
+        addItem({text: task, uuid: generateUniqueId()});
         closeModal();
       }
     },
@@ -31,10 +34,7 @@ export default function EditModal({
     <View style={styles.container}>
       <View style={styles.modalContainer}>
         <TouchableOpacity onPress={closeModal}>
-          <Image
-            style={styles.xButton}
-            source={require('../../assets/xbutton.png')}
-          />
+          <Image style={styles.xButton} source={X_IMG} />
         </TouchableOpacity>
         <TextInput
           style={styles.inputContainer}
@@ -43,7 +43,7 @@ export default function EditModal({
           }}
         />
         <View style={styles.buttonContainer}>
-          <Button onPress={handleAddItem} title="Add" />
+          <Button onPress={handleAddItem} title={ADD_TITLE} />
         </View>
       </View>
     </View>
