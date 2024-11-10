@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import React, {useCallback, useRef} from 'react';
 import {ToDoListItem} from '../../screens/toDoList/types';
-import {X_IMG} from '../../screens/toDoList/constant';
 
 export default function EditModal({
   addItem,
@@ -36,7 +35,10 @@ export default function EditModal({
     <View style={styles.container}>
       <View style={styles.modalContainer}>
         <TouchableOpacity onPress={closeModal}>
-          <Image style={styles.xButton} source={require(X_IMG)} />
+          <Image
+            style={styles.xButton}
+            source={require('../../assets/xbutton.png')}
+          />
         </TouchableOpacity>
         <TextInput
           style={styles.inputContainer}

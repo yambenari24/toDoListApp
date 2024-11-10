@@ -5,7 +5,6 @@ import FloatingButton from '../../ui/FloatingButton';
 import {useToDoList} from './useToDoList';
 import EditModal from '../../widgets/modal/EditModal';
 import {useModal} from '../../widgets/modal/useModal';
-import {MINUS_TIT, PLUS_TIT} from './constant';
 
 export default function ToDoList() {
   const {
@@ -19,7 +18,7 @@ export default function ToDoList() {
   const {modalVisible, openModal, closeModal} = useModal();
 
   const buttonState = useMemo(() => {
-    return modalVisible ? MINUS_TIT : PLUS_TIT;
+    return modalVisible ? '-' : '+';
   }, [modalVisible]);
 
   return (
