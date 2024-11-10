@@ -4,43 +4,31 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Dimensions,
   Animated,
   Image,
 } from 'react-native';
 import {BIN_IMG} from '../constant';
 import {useToDoListRow} from './useToDoListRow';
+import {ToDoListRowProps} from './types';
+import {SCREEN_WIDTH} from './constant';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
-
-const ToDoListRow = ({
-  toDoListItem,
-  deleteItem,
-  isOpen,
-  onSwipe,
-}: {
-  toDoListItem: {text: string; uuid: string};
-  deleteItem: () => void;
-  isOpen: boolean;
-  onSwipe: () => void;
-}) => {
+const ToDoListRow = ({props}: {props: ToDoListRowProps}) => {
   const {animatedRowStyle, panResponder} = useToDoListRow(
-    isOpen,
-    SCREEN_WIDTH,
-    onSwipe,
+    props.isOpen,
+    props.onSwipe,
   );
 
   return (
     <View style={styles.rowContainer}>
       <View style={styles.deleteBackground}>
-        <TouchableOpacity onPress={deleteItem}>
+        <TouchableOpacity onPress={props.deleteItem}>
           <Image style={styles.imageBin} source={BIN_IMG} />
         </TouchableOpacity>
       </View>
       <Animated.View
         style={[styles.row, animatedRowStyle]}
         {...panResponder.panHandlers}>
-        <Text style={styles.text}>{toDoListItem.text}</Text>
+        <Text style={styles.text}>{props.toDoListItem.text}</Text>
       </Animated.View>
     </View>
   );

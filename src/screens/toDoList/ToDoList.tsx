@@ -15,13 +15,16 @@ const renderItem = (
 ) => {
   return (
     <ToDoListRow
-      toDoListItem={item}
-      deleteItem={() => handleDeleteItem(item)}
-      isOpen={openRow === item.uuid}
-      onSwipe={() => handleRowSwipe(item.uuid)}
+      props={{
+        toDoListItem: item,
+        deleteItem: () => handleDeleteItem(item),
+        isOpen: openRow === item.uuid,
+        onSwipe: () => handleRowSwipe(item.uuid),
+      }}
     />
   );
 };
+
 export default function ToDoList() {
   const {
     openModal,
@@ -47,7 +50,7 @@ export default function ToDoList() {
       />
       <FloatingButton onPress={openModal} title={buttonState} />
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <EditModal closeModal={closeModal} addItem={onItemAdd} />
+        <EditModal closeModal={closeModal} onPress={onItemAdd} />
       </Modal>
     </View>
   );
