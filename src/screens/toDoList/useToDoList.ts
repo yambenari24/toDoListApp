@@ -27,7 +27,8 @@ export function useToDoList() {
   const onItemAdd = useCallback(
     function handleAddItem(text: string) {
       const copyToDoListArray = [...toDoListArray];
-      copyToDoListArray.unshift({text: text, uuid: generateUniqueId()});
+      const item: ToDoListItem = {text: text, uuid: generateUniqueId()};
+      copyToDoListArray.unshift(item);
       setToDoListArray(copyToDoListArray);
     },
     [toDoListArray],

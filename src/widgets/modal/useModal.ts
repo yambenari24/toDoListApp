@@ -21,7 +21,7 @@ export function useModal(
         closeModal();
       }
     },
-    [onPress, closeModal, inputRef],
+    [closeModal, onPress],
   );
 
   return {inputRef, handleChangeText, handleAddItem};

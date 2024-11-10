@@ -29,14 +29,6 @@ export default function ToDoList() {
     enrichToDoListArray,
   } = useToDoList();
 
-  console.log(
-    'ttt\x1b[33m',
-    new Date().getMilliseconds(),
-    new Date().toLocaleTimeString(),
-    typeof onItemAdd,
-    '\x1b[0m',
-  );
-
   return (
     <View style={styles.container}>
       <Text style={styles.textHeader}>To Do List</Text>
