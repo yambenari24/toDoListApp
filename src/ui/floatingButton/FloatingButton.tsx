@@ -1,17 +1,15 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {memo} from 'react';
+import {FloatingButtonProps} from './types';
 
 const FloatingButton = function FloatingButton({
-  title,
+  sign,
   onPress,
-}: {
-  title: string;
-  onPress: () => void;
-}) {
+}: FloatingButtonProps) {
   return (
     <View style={styles.viewContainer}>
       <TouchableOpacity style={styles.container} onPress={onPress}>
-        <Text style={styles.buttonText}>{title}</Text>;
+        <Text style={styles.buttonText}>{sign}</Text>;
       </TouchableOpacity>
     </View>
   );

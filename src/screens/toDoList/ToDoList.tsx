@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, Text, View} from 'react-native';
 import ToDoListRow from './components/ToDoListRow';
-import FloatingButton from '../../ui/FloatingButton';
+import FloatingButton from '../../ui/floatingButton/FloatingButton';
 import {useToDoList} from './useToDoList';
 import {styles} from './styles';
 import {AddItemModal} from '../../widgets/modal';
@@ -40,7 +40,7 @@ export default function ToDoList() {
         <ScrollView style={styles.scrollContainer}>
           {renderToDoListItems(enrichToDoListArray)}
         </ScrollView>
-        <FloatingButton onPress={openModal} title={buttonState} />
+        <FloatingButton onPress={openModal} sign={buttonState} />
         <Modal visible={modalVisible} animationType="fade" transparent={true}>
           <AddItemModal onPress={onItemAdd} closeModal={closeModal} />
         </Modal>
