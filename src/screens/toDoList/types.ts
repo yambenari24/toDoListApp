@@ -1,4 +1,4 @@
-export type ToDoListItem = {
+export type ToDoListItemProps = {
   uuid: string;
   text: string;
 };

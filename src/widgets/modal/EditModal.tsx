@@ -8,14 +8,14 @@ import {
 } from 'react-native';
 import React, {useCallback, useRef} from 'react';
 import {ADD_TITLE, X_IMG} from '../../screens/toDoList/constant';
-import {ToDoListItem} from '../../screens/toDoList';
+import {ToDoListItemProps} from '../../screens/toDoList';
 import {generateUniqueId} from '../../screens/toDoList/utils';
 
 export default function EditModal({
   addItem,
   closeModal,
 }: {
-  addItem: (toDoListItem: ToDoListItem) => void;
+  addItem: (toDoListItem: ToDoListItemProps) => void;
   closeModal: () => void;
 }) {
   const inputRef = useRef<string>('');
