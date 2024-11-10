@@ -7,9 +7,9 @@ import {
   CANCEL_BUTTON,
   YES_BUTTON,
 } from './constant';
+import {generateUniqueId} from './utils';
 
 export function useToDoList() {
-  const generateUniqueId = () => `${Date.now()}-${Math.random()}`;
   const [toDoListArray, setToDoListArray] = useState<ToDoListItem[]>([]);
   const [openRow, setOpenRow] = useState<string | null>(null);
 
@@ -68,7 +68,6 @@ export function useToDoList() {
     },
     [deleteItem, handleRowSwipe],
   );
-
   return {
     toDoListArray,
     handleAddItem,
