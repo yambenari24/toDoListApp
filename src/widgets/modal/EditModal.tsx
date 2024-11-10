@@ -11,7 +11,7 @@ import {ADD_TITLE, X_IMG} from '../../screens/toDoList/constant';
 import {ToDoListItemProps} from '../../screens/toDoList';
 import {useModal} from './useModal';
 
-export default function EditModal({
+export default function AddItemModal({
   addItem,
   closeModal,
 }: {
