@@ -1,5 +1,5 @@
 import {useCallback, useMemo, useState} from 'react';
-import {ToDoListItemProps} from './index';
+import {ToDoListItem} from './index';
 import {Alert} from 'react-native';
 import {
   ALERT_BUTTON_SUBTITLE,
@@ -9,9 +9,10 @@ import {
   PLUS,
   YES_BUTTON,
 } from './constant';
+import {generateUniqueId} from './utils';
 
 export function useToDoList() {
-  const [toDoListArray, setToDoListArray] = useState<ToDoListItemProps[]>([]);
+  const [toDoListArray, setToDoListArray] = useState<ToDoListItem[]>([]);
   const [openRow, setOpenRow] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -23,17 +24,17 @@ export function useToDoList() {
     setModalVisible(false);
   }, []);
 
-  const handleAddItem = useCallback(
-    function handleAddItem(item: ToDoListItemProps) {
+  const onItemAdd = useCallback(
+    function handleAddItem(task: string) {
       const copyToDoListArray = [...toDoListArray];
-      copyToDoListArray.unshift(item);
+      copyToDoListArray.unshift({text: task, uuid: generateUniqueId()});
       setToDoListArray(copyToDoListArray);
     },
     [toDoListArray],
   );
 
-  const deleteItem = useCallback(
-    function deleteItem(item: ToDoListItemProps) {
+  const onItemDelete = useCallback(
+    function deleteItem(item: ToDoListItem) {
       const copyToDoListArray = [...toDoListArray];
       const indexToDelete = copyToDoListArray.findIndex(
         task => task.uuid === item.uuid,
@@ -53,8 +54,8 @@ export function useToDoList() {
     [openRow],
   );
 
-  const handleDeleteItem = useCallback(
-    function handleDeleteItem(item: ToDoListItemProps) {
+  const onShowDeleteAlert = useCallback(
+    function handleDeleteItem(item: ToDoListItem) {
       Alert.alert(
         ALERT_BUTTON_TITLE,
         ALERT_BUTTON_SUBTITLE,
@@ -68,14 +69,14 @@ export function useToDoList() {
           {
             text: YES_BUTTON,
             onPress: () => {
-              deleteItem(item);
+              onItemDelete(item);
             },
           },
         ],
         {cancelable: true},
       );
     },
-    [deleteItem, handleRowSwipe],
+    [handleRowSwipe, onItemDelete],
   );
 
   const buttonState = useMemo(() => {
@@ -87,8 +88,8 @@ export function useToDoList() {
     closeModal,
     modalVisible,
     toDoListArray,
-    handleAddItem,
-    handleDeleteItem,
+    onItemAdd,
+    onShowDeleteAlert,
     openRow,
     handleRowSwipe,
     buttonState,

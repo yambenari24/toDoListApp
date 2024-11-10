@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useRef} from 'react';
+import React, {memo} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,10 +6,10 @@ import {
   TouchableOpacity,
   Dimensions,
   Animated,
-  PanResponder,
   Image,
 } from 'react-native';
 import {BIN_IMG} from '../constant';
+import {useToDoListRow} from './useToDoListRow';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -24,51 +24,11 @@ const ToDoListRow = ({
   isOpen: boolean;
   onSwipe: () => void;
 }) => {
-  const translateX = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (isOpen) {
-      Animated.spring(translateX, {
-        toValue: -SCREEN_WIDTH * 0.2,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.spring(translateX, {
-        toValue: 0,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [isOpen, translateX]);
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: (_, gestureState) => {
-        if (gestureState.dx < 0) {
-          translateX.setValue(gestureState.dx);
-        }
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dx < -40) {
-          onSwipe();
-          Animated.spring(translateX, {
-            toValue: -SCREEN_WIDTH * 0.2,
-            useNativeDriver: true,
-          }).start();
-        } else {
-          Animated.spring(translateX, {
-            toValue: 0,
-            useNativeDriver: true,
-          }).start();
-        }
-      },
-    }),
-  ).current;
-
-  const animatedRowStyle = {
-    transform: [{translateX}],
-  };
+  const {animatedRowStyle, panResponder} = useToDoListRow(
+    isOpen,
+    SCREEN_WIDTH,
+    onSwipe,
+  );
 
   return (
     <View style={styles.rowContainer}>

@@ -1,9 +1,7 @@
 import {useCallback, useRef} from 'react';
-import {generateUniqueId} from '../../screens/toDoList/utils';
-import {ToDoListItemProps} from '../../screens/toDoList';
 
 export function useModal(
-  addItem: (item: ToDoListItemProps) => void,
+  onPress: (text: string) => void,
   closeModal: () => void,
 ) {
   const inputRef = useRef<string>('');
@@ -17,13 +15,13 @@ export function useModal(
 
   const handleAddItem = useCallback(
     function addItemFunc() {
-      const task = inputRef.current;
-      if (task?.trim()) {
-        addItem({text: task, uuid: generateUniqueId()});
+      const text = inputRef.current;
+      if (text?.trim()) {
+        onPress(text);
         closeModal();
       }
     },
-    [addItem, closeModal, inputRef],
+    [onPress, closeModal, inputRef],
   );
 
   return {inputRef, handleChangeText, handleAddItem};

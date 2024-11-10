@@ -4,11 +4,12 @@ import ToDoListRow from './components/ToDoListRow';
 import FloatingButton from '../../ui/FloatingButton';
 import {useToDoList} from './useToDoList';
 import EditModal from '../../widgets/modal/EditModal';
-import {ToDoListItemProps} from './types';
+import {ToDoListItem} from './types';
+import {getUUIid} from './utils';
 
 const renderItem = (
-  item: ToDoListItemProps,
-  handleDeleteItem: (item: ToDoListItemProps) => void,
+  item: ToDoListItem,
+  handleDeleteItem: (item: ToDoListItem) => void,
   openRow: string | null,
   handleRowSwipe: (uuid: string) => void,
 ) => {
@@ -27,8 +28,8 @@ export default function ToDoList() {
     closeModal,
     modalVisible,
     toDoListArray,
-    handleAddItem,
-    handleDeleteItem,
+    onItemAdd,
+    onShowDeleteAlert,
     openRow,
     handleRowSwipe,
     buttonState,
@@ -38,15 +39,15 @@ export default function ToDoList() {
     <View style={styles.container}>
       <Text style={styles.textHeader}>To Do List</Text>
       <FlatList
-        keyExtractor={item => item.uuid}
+        keyExtractor={getUUIid}
         data={toDoListArray}
         renderItem={({item}) =>
-          renderItem(item, handleDeleteItem, openRow, handleRowSwipe)
+          renderItem(item, onShowDeleteAlert, openRow, handleRowSwipe)
         }
       />
       <FloatingButton onPress={openModal} title={buttonState} />
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <EditModal closeModal={closeModal} addItem={handleAddItem} />
+        <EditModal closeModal={closeModal} addItem={onItemAdd} />
       </Modal>
     </View>
   );
