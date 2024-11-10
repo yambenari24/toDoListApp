@@ -1,6 +1,7 @@
 import {useEffect, useMemo, useRef} from 'react';
 import {Animated, PanResponder} from 'react-native';
 import {SCREEN_WIDTH} from './constant';
+import {styles} from './styles';
 
 export function useToDoListRow(isOpen: boolean, onSwipe: () => void) {
   const translateX = useRef(new Animated.Value(0)).current;
@@ -49,5 +50,10 @@ export function useToDoListRow(isOpen: boolean, onSwipe: () => void) {
     }),
   ).current;
 
-  return {translateX, animatedRowStyle, panResponder};
+  const animatedStyle = useMemo(
+    () => [styles.row, animatedRowStyle],
+    [animatedRowStyle],
+  );
+
+  return {translateX, animatedRowStyle, panResponder, animatedStyle};
 }

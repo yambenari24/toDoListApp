@@ -25,9 +25,9 @@ export function useToDoList() {
   }, []);
 
   const onItemAdd = useCallback(
-    function handleAddItem(task: string) {
+    function handleAddItem(text: string) {
       const copyToDoListArray = [...toDoListArray];
-      copyToDoListArray.unshift({text: task, uuid: generateUniqueId()});
+      copyToDoListArray.unshift({text: text, uuid: generateUniqueId()});
       setToDoListArray(copyToDoListArray);
     },
     [toDoListArray],
@@ -83,6 +83,15 @@ export function useToDoList() {
     return modalVisible ? MINUS : PLUS;
   }, [modalVisible]);
 
+  const enrichToDoListArray = useMemo(() => {
+    return toDoListArray.map(item => ({
+      toDoListItem: item,
+      deleteItem: () => onShowDeleteAlert(item),
+      isOpen: openRow === item.uuid,
+      onSwipe: () => handleRowSwipe(item.uuid),
+    }));
+  }, [handleRowSwipe, onShowDeleteAlert, openRow, toDoListArray]);
+
   return {
     openModal,
     closeModal,
@@ -93,5 +102,6 @@ export function useToDoList() {
     openRow,
     handleRowSwipe,
     buttonState,
+    enrichToDoListArray,
   };
 }

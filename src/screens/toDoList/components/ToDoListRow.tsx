@@ -5,8 +5,8 @@ import {useToDoListRow} from './useToDoListRow';
 import {ToDoListRowProps} from './types';
 import {styles} from './styles';
 
-const ToDoListRow = ({props}: {props: ToDoListRowProps}) => {
-  const {animatedRowStyle, panResponder} = useToDoListRow(
+const ToDoListRow = (props: ToDoListRowProps) => {
+  const {panResponder, animatedStyle} = useToDoListRow(
     props.isOpen,
     props.onSwipe,
   );
@@ -18,9 +18,7 @@ const ToDoListRow = ({props}: {props: ToDoListRowProps}) => {
           <Image style={styles.imageBin} source={BIN_IMG} />
         </TouchableOpacity>
       </View>
-      <Animated.View
-        style={[styles.row, animatedRowStyle]}
-        {...panResponder.panHandlers}>
+      <Animated.View style={animatedStyle} {...panResponder.panHandlers}>
         <Text style={styles.text}>{props.toDoListItem.text}</Text>
       </Animated.View>
     </View>
