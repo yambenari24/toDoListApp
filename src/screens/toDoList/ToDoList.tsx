@@ -11,6 +11,7 @@ import {GestureHandlerRootView, ScrollView} from 'react-native-gesture-handler';
 const renderItem = (item: ToDoListRowProps) => {
   return (
     <ToDoListRow
+      key={item.toDoListItem.uuid}
       toDoListItem={item.toDoListItem}
       deleteItem={item.deleteItem}
       isOpen={item.isOpen}

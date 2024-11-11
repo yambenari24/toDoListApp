@@ -30,6 +30,7 @@ export function useToDoList() {
       const item: ToDoListItem = {text: text, uuid: generateUniqueId()};
       copyToDoListArray.unshift(item);
       setToDoListArray(copyToDoListArray);
+      setOpenRow(null);
     },
     [toDoListArray],
   );
@@ -44,12 +45,20 @@ export function useToDoList() {
         copyToDoListArray.splice(indexToDelete, 1);
       }
       setToDoListArray(copyToDoListArray);
+      setOpenRow(null);
     },
     [toDoListArray],
   );
 
   const handleRowSwipe = useCallback(
     (rowId: string) => {
+      console.log(
+        'ttt\x1b[44m',
+        new Date().getMilliseconds(),
+        new Date().toLocaleTimeString(),
+        rowId,
+        '\x1b[0m',
+      );
       setOpenRow(openRow === rowId ? null : rowId);
     },
     [openRow],
@@ -86,6 +95,7 @@ export function useToDoList() {
 
   const enrichToDoListArray = useMemo(() => {
     return toDoListArray.map(item => ({
+      key: item.uuid,
       toDoListItem: item,
       deleteItem: () => onShowDeleteAlert(item),
       isOpen: openRow === item.uuid,
