@@ -94,6 +94,15 @@ export function useToDoList() {
     }));
   }, [handleRowSwipe, onShowDeleteAlert, openRow, toDoListArray]);
 
+  const enrichFlatListToDoListArray = useMemo(() => {
+    return toDoListArray.map(item => ({
+      toDoListItem: item,
+      deleteItem: () => onShowDeleteAlert(item),
+      isOpen: openRow === item.uuid,
+      onSwipe: () => handleRowSwipe(item.uuid),
+    }));
+  }, [handleRowSwipe, onShowDeleteAlert, openRow, toDoListArray]);
+
   return {
     openModal,
     closeModal,
@@ -105,5 +114,6 @@ export function useToDoList() {
     handleRowSwipe,
     buttonState,
     enrichToDoListArray,
+    enrichFlatListToDoListArray,
   };
 }

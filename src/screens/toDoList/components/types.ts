@@ -7,3 +7,10 @@ export type ToDoListRowProps = {
   isOpen: boolean;
   onSwipe: () => void;
 };
+
+export type FlatListToDoListProps = {
+  toDoListItem: ToDoListItem;
+  deleteItem: () => void;
+  isOpen: boolean;
+  onSwipe: () => void;
+};
