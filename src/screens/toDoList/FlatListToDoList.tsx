@@ -6,7 +6,7 @@ import {getUUIid} from './utils';
 import {styles} from './styles';
 import {AddItemModal} from '../../widgets/modal';
 import {FlatListToDoListProps} from './components';
-import FloatingButton from '../../ui/floatingButton/FloatingButton';
+import {FloatingButton} from '../../ui/floatingButton';
 
 const renderItem: ListRenderItem<FlatListToDoListProps> = ({item}) => {
   return (
