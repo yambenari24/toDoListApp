@@ -1,6 +1,6 @@
 import React from 'react';
 import {FlatList, ListRenderItem, Modal, Text, View} from 'react-native';
-import ToDoListRow from './components/ToDoListRow';
+import {ToDoListRow} from './components';
 import {useToDoList} from './useToDoList';
 import {getUUIid} from './utils';
 import {styles} from './styles';
