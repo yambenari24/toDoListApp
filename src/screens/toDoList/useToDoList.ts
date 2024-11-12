@@ -48,12 +48,9 @@ export function useToDoList() {
     [toDoListArray],
   );
 
-  const handleRowSwipe = useCallback(
-    (rowId: string) => {
-      setOpenRow(openRow === rowId ? null : rowId);
-    },
-    [openRow],
-  );
+  const handleRowSwipe = useCallback((rowId: string) => {
+    setOpenRow(rowId);
+  }, []);
 
   const onShowDeleteAlert = useCallback(
     function handleDeleteItem(item: ToDoListItem) {
@@ -86,16 +83,6 @@ export function useToDoList() {
 
   const enrichToDoListArray = useMemo(() => {
     return toDoListArray.map(item => ({
-      key: item.uuid,
-      toDoListItem: item,
-      deleteItem: () => onShowDeleteAlert(item),
-      isOpen: openRow === item.uuid,
-      onSwipe: () => handleRowSwipe(item.uuid),
-    }));
-  }, [handleRowSwipe, onShowDeleteAlert, openRow, toDoListArray]);
-
-  const enrichFlatListToDoListArray = useMemo(() => {
-    return toDoListArray.map(item => ({
       toDoListItem: item,
       deleteItem: () => onShowDeleteAlert(item),
       isOpen: openRow === item.uuid,
@@ -114,6 +101,5 @@ export function useToDoList() {
     handleRowSwipe,
     buttonState,
     enrichToDoListArray,
-    enrichFlatListToDoListArray,
   };
 }

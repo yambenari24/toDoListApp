@@ -5,10 +5,10 @@ import {useToDoList} from './useToDoList';
 import {getUUIid} from './utils';
 import {styles} from './styles';
 import {AddItemModal} from '../../widgets/modal';
-import {FlatListToDoListProps} from './components';
+import {ToDoListRowProps} from './components';
 import FloatingButton from '../../ui/floatingButton/FloatingButton';
 
-const renderItem: ListRenderItem<FlatListToDoListProps> = ({item}) => {
+const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
   return (
     <ToDoListRow
       toDoListItem={item.toDoListItem}
@@ -26,7 +26,7 @@ export default function FlatListToDoList() {
     modalVisible,
     onItemAdd,
     buttonState,
-    enrichFlatListToDoListArray,
+    enrichToDoListArray,
   } = useToDoList();
 
   return (
@@ -34,7 +34,7 @@ export default function FlatListToDoList() {
       <Text style={styles.textHeader}>To Do List</Text>
       <FlatList
         keyExtractor={getUUIid}
-        data={enrichFlatListToDoListArray}
+        data={enrichToDoListArray}
         renderItem={renderItem}
       />
       <FloatingButton onPress={openModal} sign={buttonState} />

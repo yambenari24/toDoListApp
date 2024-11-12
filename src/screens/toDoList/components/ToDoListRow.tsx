@@ -2,10 +2,10 @@ import React, {memo} from 'react';
 import {Text, View, TouchableOpacity, Animated, Image} from 'react-native';
 import {BIN_IMG} from '../constant';
 import {useToDoListRow} from './useToDoListRow';
-import {FlatListToDoListProps, ToDoListRowProps} from './types';
+import {ToDoListRowProps} from './types';
 import {styles} from './styles';
 
-const ToDoListRow = (props: ToDoListRowProps | FlatListToDoListProps) => {
+const ToDoListRow = (props: ToDoListRowProps) => {
   const {panResponder, animatedStyle} = useToDoListRow(
     props.isOpen,
     props.onSwipe,
