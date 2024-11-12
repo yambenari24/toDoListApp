@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, Text, View} from 'react-native';
 import {ToDoListRow} from './components';
-import FloatingButton from '../../ui/floatingButton/FloatingButton';
+import {FloatingButton} from '../../ui/floatingButton';
 import {useToDoList} from './useToDoList';
 import {styles} from './styles';
 import {AddItemModal} from '../../widgets/modal';
