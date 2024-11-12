@@ -5,8 +5,8 @@ import {useToDoList} from './useToDoList';
 import {getUUIid} from './utils';
 import {styles} from './styles';
 import {AddItemModal} from '../../widgets/modal';
-import ToDoListRow from './components/ToDoListRow';
-import FloatingButton from '../../ui/floatingButton/FloatingButton';
+import {ToDoListRow} from './components';
+import {FloatingButton} from '../../ui/floatingButton';
 
 const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
   return (
