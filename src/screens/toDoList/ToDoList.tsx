@@ -1,11 +1,10 @@
 import React from 'react';
 import {Modal, ScrollView, Text, View} from 'react-native';
-import ToDoListRow from './components/ToDoListRow';
-import FloatingButton from '../../ui/floatingButton/FloatingButton';
 import {useToDoList} from './useToDoList';
 import {styles} from './styles';
 import {AddItemModal} from '../../widgets/modal';
-import {ToDoListRowProps} from './components';
+import {ToDoListRow, ToDoListRowProps} from './components';
+import {FloatingButton} from '../../ui/floatingButton';
 
 const renderItem = (item: ToDoListRowProps) => {
   return (

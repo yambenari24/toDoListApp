@@ -1,11 +1,11 @@
 import React from 'react';
 import {FlatList, ListRenderItem, Modal, Text, View} from 'react-native';
-import ToDoListRow from './components/ToDoListRow';
+import {ToDoListRowProps} from './components';
 import {useToDoList} from './useToDoList';
 import {getUUIid} from './utils';
 import {styles} from './styles';
 import {AddItemModal} from '../../widgets/modal';
-import {ToDoListRowProps} from './components';
+import ToDoListRow from './components/ToDoListRow';
 import FloatingButton from '../../ui/floatingButton/FloatingButton';
 
 const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {

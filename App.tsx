@@ -1,7 +1,6 @@
 import {StyleSheet, SafeAreaView} from 'react-native';
 import React from 'react';
 import {ToDoList} from './src/screens/toDoList';
-import FlatListToDoList from './src/screens/toDoList/FlatListToDoList';
 
 export default function App(): React.JSX.Element {
   return (
