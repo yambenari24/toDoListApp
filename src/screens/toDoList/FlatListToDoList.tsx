@@ -4,9 +4,9 @@ import {ToDoListRowProps} from './components';
 import {useToDoList} from './useToDoList';
 import {getUUIid} from './utils';
 import {styles} from './styles';
-import {AddItemModal} from '../../widgets/modal';
 import {ToDoListRow} from './components';
 import {FloatingButton} from '../../ui/floatingButton';
+import {EditModal} from '../../widgets/editModal';
 
 const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
   return (
@@ -15,6 +15,7 @@ const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
       deleteItem={item.deleteItem}
       isOpen={item.isOpen}
       onSwipe={item.onSwipe}
+      onEditItem={item.onEditItem}
     />
   );
 };
@@ -27,6 +28,8 @@ export default function FlatListToDoList() {
     onItemAdd,
     buttonState,
     enrichToDoListArray,
+    selectedItemRef,
+    handleEditItem,
   } = useToDoList();
 
   return (
@@ -39,7 +42,13 @@ export default function FlatListToDoList() {
       />
       <FloatingButton onPress={openModal} sign={buttonState} />
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <AddItemModal onPress={onItemAdd} closeModal={closeModal} />
+        <EditModal
+          onPress={
+            selectedItemRef.current?.text === '' ? onItemAdd : handleEditItem
+          }
+          closeModal={closeModal}
+          currentText={selectedItemRef.current?.text ?? ''}
+        />
       </Modal>
     </View>
   );

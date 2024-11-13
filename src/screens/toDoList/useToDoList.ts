@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from 'react';
+import {useCallback, useMemo, useRef, useState} from 'react';
 import {ToDoListItem} from './index';
 import {Alert} from 'react-native';
 import {
@@ -15,6 +15,7 @@ export function useToDoList() {
   const [toDoListArray, setToDoListArray] = useState<ToDoListItem[]>([]);
   const [openRow, setOpenRow] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const selectedItemRef = useRef<ToDoListItem | null>(null);
 
   const openModal = useCallback(function handleOpenModel() {
     setModalVisible(true);
@@ -26,10 +27,18 @@ export function useToDoList() {
 
   const onItemAdd = useCallback(
     function handleAddItem(text: string) {
+      console.log(
+        'ttt\x1b[44m',
+        new Date().getMilliseconds(),
+        new Date().toLocaleTimeString(),
+        'add',
+        '\x1b[0m',
+      );
       const copyToDoListArray = [...toDoListArray];
       const item: ToDoListItem = {text: text, uuid: generateUniqueId()};
       copyToDoListArray.unshift(item);
       setToDoListArray(copyToDoListArray);
+      selectedItemRef.current = item;
     },
     [toDoListArray],
   );
@@ -44,6 +53,7 @@ export function useToDoList() {
         copyToDoListArray.splice(indexToDelete, 1);
       }
       setToDoListArray(copyToDoListArray);
+      selectedItemRef.current = null;
     },
     [toDoListArray],
   );
@@ -77,6 +87,37 @@ export function useToDoList() {
     [handleRowSwipe, onItemDelete],
   );
 
+  function onEditItem(item: ToDoListItem) {
+    setModalVisible(true);
+    selectedItemRef.current = item;
+  }
+  function handleEditItem(newText: string) {
+    console.log(
+      'ttt\x1b[33m',
+      new Date().getMilliseconds(),
+      new Date().toLocaleTimeString(),
+      'edit',
+      '\x1b[0m',
+    );
+    if (!selectedItemRef.current) {
+      return;
+    }
+
+    const copyArray = [...toDoListArray];
+    const indexToEdit = copyArray.findIndex(
+      task => task.uuid === selectedItemRef.current?.uuid,
+    );
+
+    if (indexToEdit !== -1) {
+      copyArray[indexToEdit] = {
+        ...copyArray[indexToEdit], // Spread the existing item properties
+        text: newText, // Only update the 'text' property
+      };
+      setToDoListArray(copyArray); // Update the state with the modified array
+      selectedItemRef.current = null; // Clear the selected item ref if needed
+    }
+  }
+
   const buttonState = useMemo(() => {
     return modalVisible ? MINUS : PLUS;
   }, [modalVisible]);
@@ -87,6 +128,7 @@ export function useToDoList() {
       deleteItem: () => onShowDeleteAlert(item),
       isOpen: openRow === item.uuid,
       onSwipe: () => handleRowSwipe(item.uuid),
+      onEditItem: () => onEditItem(item),
     }));
   }, [handleRowSwipe, onShowDeleteAlert, openRow, toDoListArray]);
 
@@ -101,5 +143,8 @@ export function useToDoList() {
     handleRowSwipe,
     buttonState,
     enrichToDoListArray,
+    onEditItem,
+    selectedItemRef,
+    handleEditItem,
   };
 }

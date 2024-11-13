@@ -5,4 +5,5 @@ export type ToDoListRowProps = {
   deleteItem: () => void;
   isOpen: boolean;
   onSwipe: () => void;
+  onEditItem: () => void;
 };

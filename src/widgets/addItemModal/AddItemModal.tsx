@@ -2,10 +2,10 @@ import {Button, Image, TextInput, TouchableOpacity, View} from 'react-native';
 import React, {memo} from 'react';
 import {ADD_TITLE, X_IMG} from '../../screens/toDoList/constant';
 import {useModal} from './useModal';
-import {styles} from './styles';
 import {EditModalProps} from './types';
+import {styles} from './styles';
 
-const EditModal = memo(function EditModal({
+const AddItemModal = memo(function AddItemModal({
   onPress,
   closeModal,
 }: EditModalProps) {
@@ -28,4 +28,4 @@ const EditModal = memo(function EditModal({
   );
 });
 
-export default EditModal;
+export default AddItemModal;
