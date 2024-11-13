@@ -5,12 +5,23 @@ import {useToDoList} from './useToDoList';
 import {getUUIid} from './utils';
 import {styles} from './styles';
 import {AddItemModal} from '../../widgets/modal';
-import {ToDoListRow} from './components';
 import {FloatingButton} from '../../ui/floatingButton';
+import {ToDoListReanimatedRow} from './components/toDoListReanimatedRow';
 
-const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
+// const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
+//   return (
+//     <ToDoListRow
+//       toDoListItem={item.toDoListItem}
+//       deleteItem={item.deleteItem}
+//       isOpen={item.isOpen}
+//       onSwipe={item.onSwipe}
+//     />
+//   );
+// };
+
+const renderReanimatedItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
   return (
-    <ToDoListRow
+    <ToDoListReanimatedRow
       toDoListItem={item.toDoListItem}
       deleteItem={item.deleteItem}
       isOpen={item.isOpen}
@@ -29,16 +40,24 @@ export default function FlatListToDoList() {
     enrichToDoListArray,
   } = useToDoList();
 
+  console.log(
+    'ttt\x1b[42m',
+    new Date().getMilliseconds(),
+    new Date().toLocaleTimeString(),
+    'flat list render',
+    '\x1b[0m',
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.textHeader}>To Do List</Text>
       <FlatList
         keyExtractor={getUUIid}
         data={enrichToDoListArray}
-        renderItem={renderItem}
+        renderItem={renderReanimatedItem}
       />
       <FloatingButton onPress={openModal} sign={buttonState} />
-      <Modal visible={modalVisible} animationType="fade" transparent={true}>
+      <Modal visible={modalVisible} animationType="fade" transparent={false}>
         <AddItemModal onPress={onItemAdd} closeModal={closeModal} />
       </Modal>
     </View>

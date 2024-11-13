@@ -9,6 +9,13 @@ const EditModal = memo(function EditModal({
   onPress,
   closeModal,
 }: EditModalProps) {
+  console.log(
+    'ttt\x1b[44m',
+    new Date().getMilliseconds(),
+    new Date().toLocaleTimeString(),
+    'modal open',
+    '\x1b[0m',
+  );
   const {handleChangeText, handleAddItem} = useModal(onPress, closeModal);
   return (
     <View style={styles.container}>
