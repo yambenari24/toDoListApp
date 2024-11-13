@@ -23,22 +23,16 @@ export function useToDoList() {
 
   const closeModal = useCallback(function handleCloseModal() {
     setModalVisible(false);
+    selectedItemRef.current = null;
   }, []);
 
   const onItemAdd = useCallback(
     function handleAddItem(text: string) {
-      console.log(
-        'ttt\x1b[44m',
-        new Date().getMilliseconds(),
-        new Date().toLocaleTimeString(),
-        'add',
-        '\x1b[0m',
-      );
       const copyToDoListArray = [...toDoListArray];
       const item: ToDoListItem = {text: text, uuid: generateUniqueId()};
       copyToDoListArray.unshift(item);
       setToDoListArray(copyToDoListArray);
-      selectedItemRef.current = item;
+      selectedItemRef.current = null;
     },
     [toDoListArray],
   );
@@ -91,14 +85,8 @@ export function useToDoList() {
     setModalVisible(true);
     selectedItemRef.current = item;
   }
+
   function handleEditItem(newText: string) {
-    console.log(
-      'ttt\x1b[33m',
-      new Date().getMilliseconds(),
-      new Date().toLocaleTimeString(),
-      'edit',
-      '\x1b[0m',
-    );
     if (!selectedItemRef.current) {
       return;
     }
@@ -110,11 +98,11 @@ export function useToDoList() {
 
     if (indexToEdit !== -1) {
       copyArray[indexToEdit] = {
-        ...copyArray[indexToEdit], // Spread the existing item properties
-        text: newText, // Only update the 'text' property
+        ...copyArray[indexToEdit],
+        text: newText,
       };
-      setToDoListArray(copyArray); // Update the state with the modified array
-      selectedItemRef.current = null; // Clear the selected item ref if needed
+      setToDoListArray(copyArray);
+      selectedItemRef.current = null;
     }
   }
 

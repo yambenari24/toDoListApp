@@ -2,19 +2,19 @@ import {Button, Image, TextInput, TouchableOpacity, View} from 'react-native';
 import React, {memo} from 'react';
 import {X_IMG} from '../../screens/toDoList/constant';
 import {useModal} from './useModal';
-import {EditModalProps} from '../AddItemModal/types';
 import {styles} from '../addItemModal/styles';
+import {EditModalProps} from './types';
 
 const EditModal = memo(function EditModal({
   onPress,
   closeModal,
   currentText,
 }: EditModalProps) {
-  const {handleChangeText, handleAddItem, buttonTitle} = useModal(
+  const {handleChangeText, handleAddItem, buttonTitle} = useModal({
     onPress,
     closeModal,
     currentText,
-  );
+  });
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>

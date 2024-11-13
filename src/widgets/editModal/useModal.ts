@@ -1,12 +1,9 @@
-import {useCallback, useRef} from 'react';
+import {useCallback, useMemo, useRef} from 'react';
 import {ADD_TITLE, EDIT_TITLE} from '../../screens/toDoList/constant';
+import {EditModalProps} from './types';
 
-export function useModal(
-  onPress: (text: string) => void,
-  closeModal: () => void,
-  currentText: string,
-) {
-  const inputRef = useRef<string>(currentText);
+export function useModal(props: EditModalProps) {
+  const inputRef = useRef<string>(props.currentText);
 
   const handleChangeText = useCallback(
     (text: string) => {
@@ -19,14 +16,16 @@ export function useModal(
     function addItemFunc() {
       const text = inputRef.current;
       if (text?.trim()) {
-        onPress(text);
-        closeModal();
+        props.onPress(text);
+        props.closeModal();
       }
     },
-    [closeModal, onPress],
+    [props],
   );
 
-  const buttonTitle = currentText === '' ? ADD_TITLE : EDIT_TITLE;
+  const buttonTitle = useMemo(() => {
+    return props.currentText === '' ? ADD_TITLE : EDIT_TITLE;
+  }, [props]);
 
   return {inputRef, handleChangeText, handleAddItem, buttonTitle};
 }
