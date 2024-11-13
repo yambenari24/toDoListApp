@@ -36,6 +36,11 @@ export const styles = StyleSheet.create({
     height: 30,
     alignSelf: 'center',
   },
+  editContainer: {
+    position: 'absolute',
+    right: 16,
+    alignSelf: 'center',
+  },
   edit: {
     width: 20,
     height: 20,

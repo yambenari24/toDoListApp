@@ -1,5 +1,12 @@
 import React, {memo} from 'react';
-import {Text, View, TouchableOpacity, Animated, Image} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Animated,
+  Image,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {BIN_IMG, EDIT_ICON} from '../constant';
 import {useToDoListRow} from './useToDoListRow';
 import {ToDoListRowProps} from './types';
@@ -12,7 +19,7 @@ const ToDoListRow = (props: ToDoListRowProps) => {
   );
 
   return (
-    <View style={styles.rowContainer}>
+    <View style={[styles.rowContainer]}>
       <View style={styles.deleteBackground}>
         <TouchableOpacity onPress={props.deleteItem}>
           <Image style={styles.imageBin} source={BIN_IMG} />
@@ -20,7 +27,9 @@ const ToDoListRow = (props: ToDoListRowProps) => {
       </View>
       <Animated.View style={animatedStyle} {...panResponder.panHandlers}>
         <Text style={styles.text}>{props.toDoListItem.text}</Text>
-        <TouchableOpacity onPress={props.onEditItem}>
+        <TouchableOpacity
+          style={styles.editContainer}
+          onPress={props.onEditItem}>
           <Image style={styles.edit} source={EDIT_ICON} />
         </TouchableOpacity>
       </Animated.View>

@@ -5,6 +5,7 @@ import {styles} from './styles';
 
 export function useToDoListRow(isOpen: boolean, onSwipe: () => void) {
   const translateX = useRef(new Animated.Value(0)).current;
+  const scaleValue = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     if (isOpen) {
@@ -55,5 +56,31 @@ export function useToDoListRow(isOpen: boolean, onSwipe: () => void) {
     [animatedRowStyle],
   );
 
-  return {translateX, animatedRowStyle, panResponder, animatedStyle};
+  const handlePressIn = () => {
+    Animated.spring(scaleValue, {
+      toValue: 2,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleValue, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const scalingAnimatedStyle = {
+    transform: [{scale: 2}],
+  };
+
+  return {
+    translateX,
+    animatedRowStyle,
+    panResponder,
+    animatedStyle,
+    handlePressIn,
+    handlePressOut,
+    scalingAnimatedStyle,
+  };
 }
