@@ -1,11 +1,11 @@
 import {useEffect, useMemo, useRef} from 'react';
-import {Animated, PanResponder} from 'react-native';
+import {Animated, PanResponder, useAnimatedValue} from 'react-native';
 import {SCREEN_WIDTH} from './constant';
 import {styles} from './styles';
 
 export function useToDoListRow(isOpen: boolean, onSwipe: () => void) {
   const translateX = useRef(new Animated.Value(0)).current;
-  const scaleValue = useRef(new Animated.Value(1)).current;
+  const scaleValue = useAnimatedValue(1);
 
   useEffect(() => {
     if (isOpen) {
@@ -52,41 +52,29 @@ export function useToDoListRow(isOpen: boolean, onSwipe: () => void) {
   ).current;
 
   const handlePressIn = () => {
-    console.log(
-      'ttt\x1b[44m',
-      new Date().getMilliseconds(),
-      new Date().toLocaleTimeString(),
-      'press in',
-      '\x1b[0m',
-    );
-    Animated.spring(scaleValue, {
-      toValue: 1.5,
+    Animated.timing(scaleValue, {
+      toValue: 1.1,
       useNativeDriver: true,
     }).start();
   };
 
   const handlePressOut = () => {
-    console.log(
-      'ttt\x1b[41m',
-      new Date().getMilliseconds(),
-      new Date().toLocaleTimeString(),
-      'press out',
-      '\x1b[0m',
-    );
-    Animated.spring(scaleValue, {
+    Animated.timing(scaleValue, {
       toValue: 1,
       useNativeDriver: true,
     }).start();
   };
 
+  const scalingAnimatedStyle = useMemo(
+    () => ({
+      transform: [{scale: scaleValue}],
+    }),
+    [scaleValue],
+  );
   const animatedStyle = useMemo(
     () => [styles.row, animatedRowStyle],
     [animatedRowStyle],
   );
-
-  const scalingAnimatedStyle = {
-    transform: [{scale: scaleValue}],
-  };
 
   return {
     translateX,

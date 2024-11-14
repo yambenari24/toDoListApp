@@ -6,11 +6,16 @@ import {ToDoListRowProps} from './types';
 import {styles} from './styles';
 
 const ToDoListRow = (props: ToDoListRowProps) => {
-  const {panResponder, animatedStyle, handlePressIn, handlePressOut} =
-    useToDoListRow(props.isOpen, props.onSwipe);
+  const {
+    panResponder,
+    animatedStyle,
+    handlePressIn,
+    handlePressOut,
+    scalingAnimatedStyle,
+  } = useToDoListRow(props.isOpen, props.onSwipe);
 
   return (
-    <View style={[styles.rowContainer]}>
+    <Animated.View style={[styles.rowContainer, scalingAnimatedStyle]}>
       <View style={styles.deleteBackground}>
         <TouchableOpacity onPress={props.deleteItem}>
           <Image style={styles.imageBin} source={BIN_IMG} />
@@ -20,11 +25,13 @@ const ToDoListRow = (props: ToDoListRowProps) => {
         <Text style={styles.text}>{props.toDoListItem.text}</Text>
         <TouchableOpacity
           style={styles.editContainer}
-          onPress={props.onEditItem}>
+          onPress={props.onEditItem}
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}>
           <Image style={styles.edit} source={EDIT_ICON} />
         </TouchableOpacity>
       </Animated.View>
-    </View>
+    </Animated.View>
   );
 };
 

@@ -28,11 +28,10 @@ export default function ToDoList() {
     openModal,
     closeModal,
     modalVisible,
-    onItemAdd,
     buttonState,
     enrichToDoListArray,
     selectedItemRef,
-    handleEditItem,
+    onPressModal,
   } = useToDoList();
 
   return (
@@ -44,12 +43,7 @@ export default function ToDoList() {
       <FloatingButton onPress={openModal} sign={buttonState} />
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
         <EditModal
-          onPress={
-            selectedItemRef.current === null ||
-            selectedItemRef.current?.text === ''
-              ? onItemAdd
-              : handleEditItem
-          }
+          onPress={onPressModal}
           closeModal={closeModal}
           currentText={selectedItemRef.current?.text ?? ''}
         />

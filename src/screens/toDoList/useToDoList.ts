@@ -86,25 +86,28 @@ export function useToDoList() {
     selectedItemRef.current = item;
   }
 
-  function handleEditItem(newText: string) {
-    if (!selectedItemRef.current) {
-      return;
-    }
+  const handleEditItem = useCallback(
+    function handleEditItem(newText: string) {
+      if (!selectedItemRef.current) {
+        return;
+      }
 
-    const copyArray = [...toDoListArray];
-    const indexToEdit = copyArray.findIndex(
-      task => task.uuid === selectedItemRef.current?.uuid,
-    );
+      const copyArray = [...toDoListArray];
+      const indexToEdit = copyArray.findIndex(
+        task => task.uuid === selectedItemRef.current?.uuid,
+      );
 
-    if (indexToEdit !== -1) {
-      copyArray[indexToEdit] = {
-        ...copyArray[indexToEdit],
-        text: newText,
-      };
-      setToDoListArray(copyArray);
-      selectedItemRef.current = null;
-    }
-  }
+      if (indexToEdit !== -1) {
+        copyArray[indexToEdit] = {
+          ...copyArray[indexToEdit],
+          text: newText,
+        };
+        setToDoListArray(copyArray);
+        selectedItemRef.current = null;
+      }
+    },
+    [toDoListArray],
+  );
 
   const buttonState = useMemo(() => {
     return modalVisible ? MINUS : PLUS;
@@ -120,6 +123,13 @@ export function useToDoList() {
     }));
   }, [handleRowSwipe, onShowDeleteAlert, openRow, toDoListArray]);
 
+  const onPressModal = useMemo(() => {
+    return selectedItemRef.current === null ||
+      selectedItemRef.current?.text === ''
+      ? onItemAdd
+      : handleEditItem;
+  }, [handleEditItem, onItemAdd]);
+
   return {
     openModal,
     closeModal,
@@ -134,5 +144,6 @@ export function useToDoList() {
     onEditItem,
     selectedItemRef,
     handleEditItem,
+    onPressModal,
   };
 }
