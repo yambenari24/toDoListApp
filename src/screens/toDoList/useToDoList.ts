@@ -113,6 +113,13 @@ export function useToDoList() {
     return modalVisible ? MINUS : PLUS;
   }, [modalVisible]);
 
+  const onPress = useMemo(() => {
+    return selectedItemRef.current === null ||
+      selectedItemRef.current?.text === ''
+      ? onItemAdd
+      : handleEditItem;
+  }, [handleEditItem, onItemAdd]);
+
   const enrichToDoListArray = useMemo(() => {
     return toDoListArray.map(item => ({
       toDoListItem: item,
@@ -145,5 +152,6 @@ export function useToDoList() {
     selectedItemRef,
     handleEditItem,
     onPressModal,
+    onPress,
   };
 }

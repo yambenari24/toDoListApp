@@ -11,11 +11,11 @@ const ToDoListRow = (props: ToDoListRowProps) => {
     animatedStyle,
     handlePressIn,
     handlePressOut,
-    scalingAnimatedStyle,
+    scalingStyle,
   } = useToDoListRow(props.isOpen, props.onSwipe);
 
   return (
-    <Animated.View style={[styles.rowContainer, scalingAnimatedStyle]}>
+    <Animated.View style={scalingStyle}>
       <View style={styles.deleteBackground}>
         <TouchableOpacity onPress={props.deleteItem}>
           <Image style={styles.imageBin} source={BIN_IMG} />

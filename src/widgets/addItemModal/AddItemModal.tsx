@@ -3,12 +3,12 @@ import React, {memo} from 'react';
 import {ADD_TITLE, X_IMG} from '../../screens/toDoList/constant';
 import {useModal} from './useModal';
 import {styles} from './styles';
-import {AddItemProps} from './types';
+import {EditModalProps} from './types';
 
 const AddItemModal = memo(function AddItemModal({
   onPress,
   closeModal,
-}: AddItemProps) {
+}: EditModalProps) {
   const {handleChangeText, handleAddItem} = useModal(onPress, closeModal);
   return (
     <View style={styles.container}>
