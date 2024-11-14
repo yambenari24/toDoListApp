@@ -128,7 +128,7 @@ export function useToDoList() {
       selectedItemRef.current?.text === ''
       ? onItemAdd
       : handleEditItem;
-  }, [handleEditItem, onItemAdd]);
+  }, [handleEditItem, onItemAdd, selectedItemRef]);
 
   return {
     openModal,
