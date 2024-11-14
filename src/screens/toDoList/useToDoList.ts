@@ -48,12 +48,9 @@ export function useToDoList() {
     [toDoListArray],
   );
 
-  const handleRowSwipe = useCallback(
-    (rowId: string) => {
-      setOpenRow(openRow === rowId ? null : rowId);
-    },
-    [openRow],
-  );
+  const handleRowSwipe = useCallback((rowId: string) => {
+    setOpenRow(rowId);
+  }, []);
 
   const onShowDeleteAlert = useCallback(
     function handleDeleteItem(item: ToDoListItem) {

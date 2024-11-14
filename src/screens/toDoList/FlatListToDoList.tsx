@@ -1,15 +1,16 @@
 import React from 'react';
-import {Modal, ScrollView, Text, View} from 'react-native';
+import {FlatList, ListRenderItem, Modal, Text, View} from 'react-native';
+import {ToDoListRowProps} from './components';
 import {useToDoList} from './useToDoList';
+import {getUUIid} from './utils';
 import {styles} from './styles';
 import {AddItemModal} from '../../widgets/modal';
-import {ToDoListRow, ToDoListRowProps} from './components';
+import {ToDoListRow} from './components';
 import {FloatingButton} from '../../ui/floatingButton';
 
-const renderItem = (item: ToDoListRowProps) => {
+const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
   return (
     <ToDoListRow
-      key={item.toDoListItem.uuid}
       toDoListItem={item.toDoListItem}
       deleteItem={item.deleteItem}
       isOpen={item.isOpen}
@@ -18,11 +19,7 @@ const renderItem = (item: ToDoListRowProps) => {
   );
 };
 
-const renderToDoListItems = (items: ToDoListRowProps[]) => {
-  return items.map(item => renderItem(item));
-};
-
-export default function ToDoList() {
+export default function FlatListToDoList() {
   const {
     openModal,
     closeModal,
@@ -35,9 +32,11 @@ export default function ToDoList() {
   return (
     <View style={styles.container}>
       <Text style={styles.textHeader}>To Do List</Text>
-      <ScrollView style={styles.scrollContainer}>
-        {renderToDoListItems(enrichToDoListArray)}
-      </ScrollView>
+      <FlatList
+        keyExtractor={getUUIid}
+        data={enrichToDoListArray}
+        renderItem={renderItem}
+      />
       <FloatingButton onPress={openModal} sign={buttonState} />
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
         <AddItemModal onPress={onItemAdd} closeModal={closeModal} />

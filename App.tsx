@@ -6,6 +6,7 @@ export default function App(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
       <ToDoList />
+      {/* <FlatListToDoList /> */}
     </SafeAreaView>
   );
 }
