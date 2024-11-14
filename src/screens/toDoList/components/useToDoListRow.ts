@@ -51,27 +51,41 @@ export function useToDoListRow(isOpen: boolean, onSwipe: () => void) {
     }),
   ).current;
 
-  const animatedStyle = useMemo(
-    () => [styles.row, animatedRowStyle],
-    [animatedRowStyle],
-  );
-
   const handlePressIn = () => {
+    console.log(
+      'ttt\x1b[44m',
+      new Date().getMilliseconds(),
+      new Date().toLocaleTimeString(),
+      'press in',
+      '\x1b[0m',
+    );
     Animated.spring(scaleValue, {
-      toValue: 2,
+      toValue: 1.5,
       useNativeDriver: true,
     }).start();
   };
 
   const handlePressOut = () => {
+    console.log(
+      'ttt\x1b[41m',
+      new Date().getMilliseconds(),
+      new Date().toLocaleTimeString(),
+      'press out',
+      '\x1b[0m',
+    );
     Animated.spring(scaleValue, {
       toValue: 1,
       useNativeDriver: true,
     }).start();
   };
 
+  const animatedStyle = useMemo(
+    () => [styles.row, animatedRowStyle],
+    [animatedRowStyle],
+  );
+
   const scalingAnimatedStyle = {
-    transform: [{scale: 2}],
+    transform: [{scale: scaleValue}],
   };
 
   return {
