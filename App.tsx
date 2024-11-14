@@ -1,12 +1,13 @@
 import {StyleSheet, SafeAreaView} from 'react-native';
 import React from 'react';
-import {FlatListToDoList, ToDoList} from './src/screens/toDoList';
+import Login from './src/screens/toDoList/login/Login';
 
 export default function App(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
-      <ToDoList />
+      {/* <ToDoList /> */}
       {/* <FlatListToDoList /> */}
+      <Login />
     </SafeAreaView>
   );
 }
