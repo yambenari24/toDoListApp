@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from 'react';
+import {useCallback, useMemo, useRef, useState} from 'react';
 import {ToDoListItem} from './index';
 import {Alert} from 'react-native';
 import {
@@ -15,6 +15,7 @@ export function useToDoList() {
   const [toDoListArray, setToDoListArray] = useState<ToDoListItem[]>([]);
   const [openRow, setOpenRow] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const selectedItemRef = useRef<ToDoListItem | null>(null);
 
   const openModal = useCallback(function handleOpenModel() {
     setModalVisible(true);
@@ -22,6 +23,7 @@ export function useToDoList() {
 
   const closeModal = useCallback(function handleCloseModal() {
     setModalVisible(false);
+    selectedItemRef.current = null;
   }, []);
 
   const onItemAdd = useCallback(
@@ -30,6 +32,7 @@ export function useToDoList() {
       const item: ToDoListItem = {text: text, uuid: generateUniqueId()};
       copyToDoListArray.unshift(item);
       setToDoListArray(copyToDoListArray);
+      selectedItemRef.current = null;
     },
     [toDoListArray],
   );
@@ -44,6 +47,7 @@ export function useToDoList() {
         copyToDoListArray.splice(indexToDelete, 1);
       }
       setToDoListArray(copyToDoListArray);
+      selectedItemRef.current = null;
     },
     [toDoListArray],
   );
@@ -77,9 +81,44 @@ export function useToDoList() {
     [handleRowSwipe, onItemDelete],
   );
 
+  function onEditItem(item: ToDoListItem) {
+    setModalVisible(true);
+    selectedItemRef.current = item;
+  }
+
+  const handleEditItem = useCallback(
+    function handleEditItem(newText: string) {
+      if (!selectedItemRef.current) {
+        return;
+      }
+
+      const copyArray = [...toDoListArray];
+      const indexToEdit = copyArray.findIndex(
+        task => task.uuid === selectedItemRef.current?.uuid,
+      );
+
+      if (indexToEdit !== -1) {
+        copyArray[indexToEdit] = {
+          ...copyArray[indexToEdit],
+          text: newText,
+        };
+        setToDoListArray(copyArray);
+        selectedItemRef.current = null;
+      }
+    },
+    [toDoListArray],
+  );
+
   const buttonState = useMemo(() => {
     return modalVisible ? MINUS : PLUS;
   }, [modalVisible]);
+
+  const onPress = useMemo(() => {
+    return selectedItemRef.current === null ||
+      selectedItemRef.current?.text === ''
+      ? onItemAdd
+      : handleEditItem;
+  }, [handleEditItem, onItemAdd]);
 
   const enrichToDoListArray = useMemo(() => {
     return toDoListArray.map(item => ({
@@ -87,8 +126,16 @@ export function useToDoList() {
       deleteItem: () => onShowDeleteAlert(item),
       isOpen: openRow === item.uuid,
       onSwipe: () => handleRowSwipe(item.uuid),
+      onEditItem: () => onEditItem(item),
     }));
   }, [handleRowSwipe, onShowDeleteAlert, openRow, toDoListArray]);
+
+  const onPressModal = useMemo(() => {
+    return selectedItemRef.current === null ||
+      selectedItemRef.current?.text === ''
+      ? onItemAdd
+      : handleEditItem;
+  }, [handleEditItem, onItemAdd, selectedItemRef]);
 
   return {
     openModal,
@@ -101,5 +148,10 @@ export function useToDoList() {
     handleRowSwipe,
     buttonState,
     enrichToDoListArray,
+    onEditItem,
+    selectedItemRef,
+    handleEditItem,
+    onPressModal,
+    onPress,
   };
 }

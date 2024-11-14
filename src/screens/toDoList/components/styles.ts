@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 5,
+    flexDirection: 'row',
   },
   text: {
     fontSize: 16,
@@ -34,5 +35,14 @@ export const styles = StyleSheet.create({
     width: 30,
     height: 30,
     alignSelf: 'center',
+  },
+  editContainer: {
+    position: 'absolute',
+    right: 16,
+    alignSelf: 'center',
+  },
+  edit: {
+    width: 20,
+    height: 20,
   },
 });

@@ -1,10 +1,11 @@
 import {useEffect, useMemo, useRef} from 'react';
-import {Animated, PanResponder} from 'react-native';
+import {Animated, PanResponder, useAnimatedValue} from 'react-native';
 import {SCREEN_WIDTH} from './constant';
 import {styles} from './styles';
 
 export function useToDoListRow(isOpen: boolean, onSwipe: () => void) {
   const translateX = useRef(new Animated.Value(0)).current;
+  const scaleValue = useAnimatedValue(1);
 
   useEffect(() => {
     if (isOpen) {
@@ -50,10 +51,42 @@ export function useToDoListRow(isOpen: boolean, onSwipe: () => void) {
     }),
   ).current;
 
+  const handlePressIn = () => {
+    Animated.timing(scaleValue, {
+      toValue: 1.1,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.timing(scaleValue, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const scalingAnimatedStyle = useMemo(
+    () => ({
+      transform: [{scale: scaleValue}],
+    }),
+    [scaleValue],
+  );
   const animatedStyle = useMemo(
     () => [styles.row, animatedRowStyle],
     [animatedRowStyle],
   );
 
-  return {translateX, animatedRowStyle, panResponder, animatedStyle};
+  const scalingStyle = () => {
+    return [styles.row, scalingAnimatedStyle];
+  };
+
+  return {
+    translateX,
+    animatedRowStyle,
+    panResponder,
+    animatedStyle,
+    handlePressIn,
+    handlePressOut,
+    scalingStyle,
+  };
 }

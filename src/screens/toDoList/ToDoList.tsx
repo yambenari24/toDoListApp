@@ -2,9 +2,9 @@ import React from 'react';
 import {Modal, ScrollView, Text, View} from 'react-native';
 import {useToDoList} from './useToDoList';
 import {styles} from './styles';
-import {AddItemModal} from '../../widgets/modal';
 import {ToDoListRow, ToDoListRowProps} from './components';
 import {FloatingButton} from '../../ui/floatingButton';
+import {EditModal} from '../../widgets/editModal';
 
 const renderItem = (item: ToDoListRowProps) => {
   return (
@@ -14,6 +14,7 @@ const renderItem = (item: ToDoListRowProps) => {
       deleteItem={item.deleteItem}
       isOpen={item.isOpen}
       onSwipe={item.onSwipe}
+      onEditItem={item.onEditItem}
     />
   );
 };
@@ -27,9 +28,10 @@ export default function ToDoList() {
     openModal,
     closeModal,
     modalVisible,
-    onItemAdd,
     buttonState,
     enrichToDoListArray,
+    selectedItemRef,
+    onPress,
   } = useToDoList();
 
   return (
@@ -40,7 +42,11 @@ export default function ToDoList() {
       </ScrollView>
       <FloatingButton onPress={openModal} sign={buttonState} />
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <AddItemModal onPress={onItemAdd} closeModal={closeModal} />
+        <EditModal
+          onPress={onPress}
+          closeModal={closeModal}
+          currentText={selectedItemRef.current?.text ?? ''}
+        />
       </Modal>
     </View>
   );

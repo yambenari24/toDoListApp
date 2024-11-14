@@ -5,7 +5,7 @@ import {useModal} from './useModal';
 import {styles} from './styles';
 import {EditModalProps} from './types';
 
-const EditModal = memo(function EditModal({
+const AddItemModal = memo(function AddItemModal({
   onPress,
   closeModal,
 }: EditModalProps) {
@@ -28,4 +28,4 @@ const EditModal = memo(function EditModal({
   );
 });
 
-export default EditModal;
+export default AddItemModal;
