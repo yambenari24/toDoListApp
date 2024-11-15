@@ -1,7 +1,12 @@
 import {useRef, useState} from 'react';
 import {Alert} from 'react-native';
+import {LoginScreenNavigationProp} from './types';
 
-export function useLogin() {
+export function useLogin({
+  navigation,
+}: {
+  navigation: LoginScreenNavigationProp;
+}) {
   const userName = useRef('');
   const password = useRef('');
 
@@ -11,7 +16,7 @@ export function useLogin() {
     if (userName.current !== 'Yam' || password.current !== '123') {
       setIsValid(false);
     } else {
-      setIsValid(true);
+      navigation.navigate('FlatListToDoList');
     }
     validAction();
   }
@@ -20,7 +25,7 @@ export function useLogin() {
     if (valid) {
       Alert.alert('Valid Password');
     } else if (valid !== null) {
-      Alert.alert('Your username or password is wrong');
+      navigation.navigate('FlatListToDoList');
     }
   }
 

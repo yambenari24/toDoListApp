@@ -1,9 +1,15 @@
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import React from 'react';
 import {useLogin} from './useLogin';
+import {LoginParam} from './types';
+import {StackNavigationProp} from '@react-navigation/stack';
 
-export default function Login() {
-  const {userName, password, checkIsValid} = useLogin();
+export default function Login({
+  navigation,
+}: {
+  navigation: StackNavigationProp<LoginParam, 'Login'>;
+}) {
+  const {userName, password, checkIsValid} = useLogin({navigation});
 
   return (
     <View style={style.screenContainer}>
