@@ -76,10 +76,6 @@ export function useToDoListRow(isOpen: boolean, onSwipe: () => void) {
     [animatedRowStyle],
   );
 
-  const scalingStyle = () => {
-    return [styles.row, scalingAnimatedStyle];
-  };
-
   return {
     translateX,
     animatedRowStyle,
@@ -87,6 +83,6 @@ export function useToDoListRow(isOpen: boolean, onSwipe: () => void) {
     animatedStyle,
     handlePressIn,
     handlePressOut,
-    scalingStyle,
+    scalingAnimatedStyle,
   };
 }

@@ -10,7 +10,9 @@ export default function Login({
 }: {
   navigation: StackNavigationProp<LoginParam, 'Login'>;
 }) {
-  const {userName, password, checkIsValid} = useLogin({navigation});
+  const {isValidUser, handleUsernameChange, handlePasswordChange} = useLogin({
+    navigation,
+  });
 
   return (
     <View style={style.screenContainer}>
@@ -18,14 +20,14 @@ export default function Login({
       <View style={style.container}>
         <TextInput
           style={style.inputContainer}
-          onChangeText={text => (userName.current = text)}
+          onChangeText={handleUsernameChange}
         />
         <TextInput
           style={style.inputContainer}
           secureTextEntry={true}
-          onChangeText={text => (password.current = text)}
+          onChangeText={handlePasswordChange}
         />
-        <Pressable style={style.confirmButton} onPress={checkIsValid}>
+        <Pressable style={style.confirmButton} onPress={isValidUser}>
           <Text style={style.confirmText}>{CONFIRM_TITLE}</Text>
         </Pressable>
       </View>
