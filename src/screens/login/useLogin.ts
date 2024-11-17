@@ -15,7 +15,6 @@ export function useLogin({
 
   async function isValidUser() {
     try {
-      console.log('hi');
       const userRef = usersCollection.doc(usernameRef.current);
       const docSnapshot = await userRef.get();
       if (docSnapshot.exists) {
