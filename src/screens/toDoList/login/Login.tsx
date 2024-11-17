@@ -3,6 +3,7 @@ import React from 'react';
 import {useLogin} from './useLogin';
 import {LoginParam} from './types';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {CONFIRM_TITLE, LOGIN_TITLE} from './constants';
 
 export default function Login({
   navigation,
@@ -13,7 +14,7 @@ export default function Login({
 
   return (
     <View style={style.screenContainer}>
-      <Text style={style.header}>Please enter user name and password</Text>
+      <Text style={style.header}>{LOGIN_TITLE}</Text>
       <View style={style.container}>
         <TextInput
           style={style.inputContainer}
@@ -25,7 +26,7 @@ export default function Login({
           onChangeText={text => (password.current = text)}
         />
         <Pressable style={style.confirmButton} onPress={checkIsValid}>
-          <Text style={style.confirmText}>Confirm</Text>
+          <Text style={style.confirmText}>{CONFIRM_TITLE}</Text>
         </Pressable>
       </View>
     </View>

@@ -1,10 +1,9 @@
 import {StyleSheet, SafeAreaView} from 'react-native';
 import React from 'react';
-import Login from './src/screens/toDoList/login/Login';
 import {createStackNavigator} from '@react-navigation/stack';
 import {FlatListToDoList} from './src/screens/toDoList';
 import {NavigationContainer} from '@react-navigation/native';
-import {LoginParam} from './src/screens/toDoList/login';
+import {Login, LoginParam} from './src/screens/toDoList/login';
 
 const Stack = createStackNavigator<LoginParam>();
 
