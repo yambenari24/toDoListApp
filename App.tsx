@@ -3,7 +3,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {FlatListToDoList} from './src/screens/toDoList';
 import {NavigationContainer} from '@react-navigation/native';
-import {Login, LoginParam} from './src/screens/toDoList/login';
+import {Login, LoginParam} from './src/screens/login';
 
 const Stack = createStackNavigator<LoginParam>();
 
