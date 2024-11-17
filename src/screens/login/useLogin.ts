@@ -13,8 +13,9 @@ export function useLogin({
   const passwordRef = useRef('');
   const usersCollection = firestore().collection('users');
 
-  async function checkIsValid() {
+  async function isValidUser() {
     try {
+      console.log('hi');
       const userRef = usersCollection.doc(usernameRef.current);
       const docSnapshot = await userRef.get();
       if (docSnapshot.exists) {
@@ -39,7 +40,7 @@ export function useLogin({
   };
 
   return {
-    checkIsValid,
+    isValidUser,
     handleUsernameChange,
     handlePasswordChange,
   };
