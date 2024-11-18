@@ -3,6 +3,7 @@ import React from 'react';
 import {useLogin} from './useLogin';
 import {CONFIRM_TITLE, LOGIN_TITLE} from './constants';
 import {LoginScreenNavigationProp} from '../../navigation';
+import {colors} from '../../theme/colors';
 
 export default function Login({
   navigation,
@@ -37,7 +38,7 @@ export default function Login({
 const style = StyleSheet.create({
   screenContainer: {
     flex: 1,
-    backgroundColor: '#F3F3E0',
+    backgroundColor: colors.background,
   },
   container: {
     justifyContent: 'center',
@@ -54,14 +55,14 @@ const style = StyleSheet.create({
     margin: 8,
     width: '60%',
     height: 50,
-    backgroundColor: '#608BC1',
+    backgroundColor: colors.inputBg,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: '#133E87',
+    borderColor: colors.border,
   },
   confirmButton: {
     marginTop: 20,
-    backgroundColor: '#CBDCEB',
+    backgroundColor: colors.button,
     width: '30%',
     alignItems: 'center',
     borderRadius: 4,
