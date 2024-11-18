@@ -3,7 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {Login} from '../screens/login';
 import {FlatListToDoList} from '../screens/toDoList';
-import {NavigationParam} from '.';
+import {NavigationParam} from '.types';
 import {useMainScreen} from './useMainScreen';
 
 const Stack = createStackNavigator<NavigationParam>();
