@@ -1,14 +1,13 @@
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import React from 'react';
 import {useLogin} from './useLogin';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {CONFIRM_TITLE, LOGIN_TITLE} from './constants';
-import {NavigationParam} from '../mainScreen';
+import {LoginScreenNavigationProp} from '../../navigation';
 
 export default function Login({
   navigation,
 }: {
-  navigation: StackNavigationProp<NavigationParam, 'Login'>;
+  navigation: LoginScreenNavigationProp;
 }) {
   const {isValidUser, handleUsernameChange, handlePasswordChange} = useLogin({
     navigation,

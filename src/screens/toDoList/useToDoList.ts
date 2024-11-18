@@ -11,13 +11,12 @@ import {
 } from './constant';
 import {generateUniqueId} from './utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {NavigationParam} from '../mainScreen';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {ToDoListScreenNavigationProp} from '../../navigation';
 
 export function useToDoList({
   navigation,
 }: {
-  navigation: StackNavigationProp<NavigationParam, 'FlatListToDoList'>;
+  navigation: ToDoListScreenNavigationProp;
 }) {
   const [toDoListArray, setToDoListArray] = useState<ToDoListItem[]>([]);
   const [openRow, setOpenRow] = useState<string | null>(null);

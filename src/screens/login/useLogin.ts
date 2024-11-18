@@ -3,7 +3,7 @@ import {Alert} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/app';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {LoginScreenNavigationProp} from '../mainScreen';
+import {LoginScreenNavigationProp} from '../../navigation';
 
 export function useLogin({
   navigation,

@@ -16,8 +16,7 @@ import {ToDoListRow} from './components';
 import {FloatingButton} from '../../ui/floatingButton';
 import {EditModal} from '../../widgets/editModal';
 import {LOGOUT_ICON} from './constant';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {NavigationParam} from '../mainScreen';
+import {ToDoListScreenNavigationProp} from '../../navigation';
 
 const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
   return (
@@ -34,7 +33,7 @@ const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
 export default function FlatListToDoList({
   navigation,
 }: {
-  navigation: StackNavigationProp<NavigationParam, 'FlatListToDoList'>;
+  navigation: ToDoListScreenNavigationProp;
 }) {
   const {
     openModal,
