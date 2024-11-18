@@ -1,4 +1,4 @@
-import {useRef} from 'react';
+import {useCallback, useRef} from 'react';
 import {Alert} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/app';
@@ -14,34 +14,37 @@ export function useLogin({
   const passwordRef = useRef('');
   const usersCollection = firestore().collection('users');
 
-  async function isValidUser() {
-    try {
-      const userRef = usersCollection.doc(usernameRef.current);
-      const docSnapshot = await userRef.get();
-      if (docSnapshot.exists) {
-        const userData = docSnapshot.data();
-        if (userData?.password === passwordRef.current) {
-          await AsyncStorage.setItem('userToken', 'authenticated');
-          navigation.navigate('FlatListToDoList');
-        } else {
-          Alert.alert('Invalid Credentials');
+  const handlePressConfirm = useCallback(
+    async function handlePressConfirm() {
+      try {
+        const user = usersCollection.doc(usernameRef.current);
+        const docSnapshot = await user.get();
+        if (docSnapshot.exists) {
+          const userData = docSnapshot.data();
+          if (userData?.password === passwordRef.current) {
+            await AsyncStorage.setItem('userToken', 'authenticated');
+            navigation.navigate('FlatListToDoList');
+          } else {
+            Alert.alert('Invalid Credentials');
+          }
         }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+    },
+    [navigation, usersCollection],
+  );
 
-  const handleUsernameChange = (username: string) => {
+  const handleUsernameChange = useCallback((username: string) => {
     usernameRef.current = username;
-  };
+  }, []);
 
-  const handlePasswordChange = (password: string) => {
+  const handlePasswordChange = useCallback((password: string) => {
     passwordRef.current = password;
-  };
+  }, []);
 
   return {
-    isValidUser,
+    handlePressConfirm,
     handleUsernameChange,
     handlePasswordChange,
   };

@@ -10,9 +10,10 @@ export default function Login({
 }: {
   navigation: LoginScreenNavigationProp;
 }) {
-  const {isValidUser, handleUsernameChange, handlePasswordChange} = useLogin({
-    navigation,
-  });
+  const {handlePressConfirm, handleUsernameChange, handlePasswordChange} =
+    useLogin({
+      navigation,
+    });
 
   return (
     <View style={style.screenContainer}>
@@ -27,7 +28,7 @@ export default function Login({
           secureTextEntry={true}
           onChangeText={handlePasswordChange}
         />
-        <Pressable style={style.confirmButton} onPress={isValidUser}>
+        <Pressable style={style.confirmButton} onPress={handlePressConfirm}>
           <Text style={style.confirmText}>{CONFIRM_TITLE}</Text>
         </Pressable>
       </View>
