@@ -1,8 +1,9 @@
 import {useRef} from 'react';
 import {Alert} from 'react-native';
-import {LoginScreenNavigationProp} from './types';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/app';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {LoginScreenNavigationProp} from '../mainScreen';
 
 export function useLogin({
   navigation,
@@ -20,6 +21,7 @@ export function useLogin({
       if (docSnapshot.exists) {
         const userData = docSnapshot.data();
         if (userData?.password === passwordRef.current) {
+          await AsyncStorage.setItem('userToken', 'authenticated');
           navigation.navigate('FlatListToDoList');
         } else {
           Alert.alert('Invalid Credentials');

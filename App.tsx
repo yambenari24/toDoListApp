@@ -1,27 +1,6 @@
-import {StyleSheet, SafeAreaView} from 'react-native';
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {FlatListToDoList} from './src/screens/toDoList';
-import {NavigationContainer} from '@react-navigation/native';
-import {Login, LoginParam} from './src/screens/login';
-
-const Stack = createStackNavigator<LoginParam>();
+import {MainScreen} from './src/screens/mainScreen';
 
 export default function App(): React.JSX.Element {
-  return (
-    <NavigationContainer>
-      <SafeAreaView style={styles.container}>
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="FlatListToDoList" component={FlatListToDoList} />
-        </Stack.Navigator>
-      </SafeAreaView>
-    </NavigationContainer>
-  );
+  return <MainScreen />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, // cover the whole screen
-  },
-});

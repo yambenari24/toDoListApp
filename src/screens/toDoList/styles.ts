@@ -15,4 +15,13 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
     marginTop: 8,
   },
+  logoutButton: {
+    position: 'absolute',
+    left: 20,
+    bottom: 20,
+  },
+  logoutIcon: {
+    height: 48,
+    width: 48,
+  },
 });
