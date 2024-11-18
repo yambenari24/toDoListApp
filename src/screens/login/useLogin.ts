@@ -29,7 +29,7 @@ export function useLogin({
           }
         }
       } catch (error) {
-        console.log(error);
+        Alert.alert('Something went wrong... try again');
       }
     },
     [navigation, usersCollection],
