@@ -143,19 +143,23 @@ export function useToDoList({
       : handleEditItem;
   }, [handleEditItem, onItemAdd, selectedItemRef]);
 
-  function onPressLogout() {
-    AsyncStorage.removeItem('userToken')
-      .then(() => {
-        console.log('User logged out, token removed');
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'Login'}],
+  const onPressLogout = useCallback(
+    function onPressLogout() {
+      AsyncStorage.removeItem('userToken')
+        .then(() => {
+          console.log('User logged out, token removed');
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'Login'}],
+          });
+        })
+        .catch(error => {
+          console.error('Error during logout: ', error);
         });
-      })
-      .catch(error => {
-        console.error('Error during logout: ', error);
-      });
-  }
+    },
+    [navigation],
+  );
+
   return {
     openModal,
     closeModal,

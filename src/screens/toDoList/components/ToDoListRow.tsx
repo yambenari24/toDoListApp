@@ -8,20 +8,19 @@ import {styles} from './styles';
 const ToDoListRow = (props: ToDoListRowProps) => {
   const {
     panResponder,
-    animatedStyle,
     handlePressIn,
     handlePressOut,
-    scalingAnimatedStyle,
+    styles: rowStyles,
   } = useToDoListRow(props.isOpen, props.onSwipe);
 
   return (
-    <Animated.View style={[styles.rowContainer, scalingAnimatedStyle]}>
+    <Animated.View style={rowStyles.scalingContainer}>
       <View style={styles.deleteBackground}>
         <TouchableOpacity onPress={props.deleteItem}>
           <Image style={styles.imageBin} source={BIN_IMG} />
         </TouchableOpacity>
       </View>
-      <Animated.View style={animatedStyle} {...panResponder.panHandlers}>
+      <Animated.View style={rowStyles.row} {...panResponder.panHandlers}>
         <Text style={styles.text}>{props.toDoListItem.text}</Text>
         <TouchableOpacity
           style={styles.editContainer}
