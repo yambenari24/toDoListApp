@@ -32,9 +32,7 @@ const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
 
 export default function FlatListToDoList({
   navigation,
-}: {
-  navigation: ToDoListScreenNavigationProp;
-}) {
+}: ToDoListScreenNavigationProp) {
   const {
     openModal,
     closeModal,

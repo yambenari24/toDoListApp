@@ -15,9 +15,7 @@ import {ToDoListScreenNavigationProp} from '../../navigation';
 
 export function useToDoList({
   navigation,
-}: {
-  navigation: ToDoListScreenNavigationProp;
-}) {
+}: ToDoListScreenNavigationProp) {
   const [toDoListArray, setToDoListArray] = useState<ToDoListItem[]>([]);
   const [openRow, setOpenRow] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
