@@ -1,18 +1,18 @@
-import {StyleSheet, SafeAreaView} from 'react-native';
 import React from 'react';
-import {FlatListToDoList, ToDoList} from './src/screens/toDoList';
+import {MainScreen} from './src/navigation';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {StyleSheet} from 'react-native';
 
 export default function App(): React.JSX.Element {
   return (
-    <SafeAreaView style={styles.container}>
-      <ToDoList />
-      {/* <FlatListToDoList /> */}
+    <SafeAreaView style={style.container}>
+      <MainScreen />
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
-    flex: 1, // cover the whole screen
+    flex: 1,
   },
 });

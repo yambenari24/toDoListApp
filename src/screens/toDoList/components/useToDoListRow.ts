@@ -21,10 +21,6 @@ export function useToDoListRow(isOpen: boolean, onSwipe: () => void) {
     }
   }, [isOpen, translateX]);
 
-  const animatedRowStyle = useMemo(() => {
-    return {transform: [{translateX}]};
-  }, [translateX]);
-
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -65,28 +61,27 @@ export function useToDoListRow(isOpen: boolean, onSwipe: () => void) {
     }).start();
   };
 
+  const animatedRowStyle = useMemo(
+    () => ({
+      transform: [{translateX}],
+    }),
+    [translateX],
+  );
+
   const scalingAnimatedStyle = useMemo(
     () => ({
       transform: [{scale: scaleValue}],
     }),
     [scaleValue],
   );
-  const animatedStyle = useMemo(
-    () => [styles.row, animatedRowStyle],
-    [animatedRowStyle],
-  );
-
-  const scalingStyle = () => {
-    return [styles.row, scalingAnimatedStyle];
-  };
 
   return {
-    translateX,
-    animatedRowStyle,
     panResponder,
-    animatedStyle,
     handlePressIn,
     handlePressOut,
-    scalingStyle,
+    styles: {
+      row: [styles.row, animatedRowStyle],
+      scalingContainer: [styles.rowContainer, scalingAnimatedStyle],
+    },
   };
 }

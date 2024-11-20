@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "820738216567",
+    "firebase_url": "https://todo-25dcc-default-rtdb.firebaseio.com",
+    "project_id": "todo-25dcc",
+    "storage_bucket": "todo-25dcc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820738216567:android:9a0e7037218fe99190ac72",
+        "android_client_info": {
+          "package_name": "com.yam.todo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCd18IVigCX9muKc_7X5QYEIhqynhxPiKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

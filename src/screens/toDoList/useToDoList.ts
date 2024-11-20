@@ -10,8 +10,12 @@ import {
   YES_BUTTON,
 } from './constant';
 import {generateUniqueId} from './utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ToDoListScreenNavigationProp} from '../../navigation';
 
-export function useToDoList() {
+export function useToDoList({
+  navigation,
+}: ToDoListScreenNavigationProp) {
   const [toDoListArray, setToDoListArray] = useState<ToDoListItem[]>([]);
   const [openRow, setOpenRow] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -137,6 +141,23 @@ export function useToDoList() {
       : handleEditItem;
   }, [handleEditItem, onItemAdd, selectedItemRef]);
 
+  const onPressLogout = useCallback(
+    function onPressLogout() {
+      AsyncStorage.removeItem('userToken')
+        .then(() => {
+          console.log('User logged out, token removed');
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'Login'}],
+          });
+        })
+        .catch(error => {
+          console.error('Error during logout: ', error);
+        });
+    },
+    [navigation],
+  );
+
   return {
     openModal,
     closeModal,
@@ -153,5 +174,6 @@ export function useToDoList() {
     handleEditItem,
     onPressModal,
     onPress,
+    onPressLogout,
   };
 }
