@@ -11,6 +11,7 @@ export function useModal(navigation: EditModalNavigationProp) {
 
   const onAddItem = () => {
     toDoListStore.addItem(inputRef.current);
+    toDoListStore.closeModal();
     closeModal();
   };
 
@@ -21,6 +22,7 @@ export function useModal(navigation: EditModalNavigationProp) {
         text: inputRef.current,
       });
     }
+    toDoListStore.closeModal();
     closeModal();
   };
 

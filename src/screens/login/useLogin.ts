@@ -14,11 +14,11 @@ export function useLogin({
   };
 
   const handleUsernameChange = (username: string) => {
-    userStore.username = username;
+    userStore.setUserName(username);
   };
 
   const handlePasswordChange = (password: string) => {
-    userStore.password = password;
+    userStore.setPassword(password);
   };
   return {
     handlePressConfirm,

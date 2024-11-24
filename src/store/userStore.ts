@@ -20,6 +20,14 @@ class UserStore {
     this.userToken = null;
   }
 
+  setUserName(userName: string) {
+    this.username = userName;
+  }
+
+  setPassword(password: string) {
+    this.password = password;
+  }
+
   clearCredential() {
     this.username = '';
     this.password = '';
