@@ -3,7 +3,6 @@ import {
   FlatList,
   Image,
   ListRenderItem,
-  Modal,
   Text,
   TouchableOpacity,
   View,
@@ -13,56 +12,48 @@ import {useToDoList} from './useToDoList';
 import {getUUIid} from './utils';
 import {styles} from './styles';
 import {ToDoListRow} from './components';
+import {toDoListStore} from '../../store/toDoListStore';
+import {observer} from 'mobx-react-lite';
 import {FloatingButton} from '../../ui/floatingButton';
-import {EditModal} from '../../widgets/editModal';
+import {useNavigation} from '@react-navigation/native';
 import {LOGOUT_ICON} from './constant';
-import {ToDoListScreenNavigationProp} from '../../navigation';
 
-const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
-  return (
-    <ToDoListRow
-      toDoListItem={item.toDoListItem}
-      deleteItem={item.deleteItem}
-      isOpen={item.isOpen}
-      onSwipe={item.onSwipe}
-      onEditItem={item.onEditItem}
-    />
-  );
-};
+const renderItem =
+  (
+    onEditItem: (item: ToDoListRowProps) => void,
+  ): ListRenderItem<ToDoListRowProps> =>
+  ({item}) =>
+    (
+      <ToDoListRow
+        toDoListItem={item.toDoListItem}
+        deleteItem={item.deleteItem}
+        isOpen={item.isOpen}
+        onSwipe={item.onSwipe}
+        onEditItem={() => onEditItem(item)}
+      />
+    );
 
-export default function FlatListToDoList({
-  navigation,
-}: ToDoListScreenNavigationProp) {
-  const {
-    openModal,
-    closeModal,
-    modalVisible,
-    buttonState,
-    enrichToDoListArray,
-    selectedItemRef,
-    onPress,
-    onPressLogout,
-  } = useToDoList({navigation});
-
+const FlatListToDoList = observer(() => {
+  const navigation = useNavigation();
+  const {onPressLogout, onPressFloatingButton, onEditItem} =
+    useToDoList(navigation);
   return (
     <View style={styles.container}>
       <Text style={styles.textHeader}>To Do List</Text>
       <FlatList
         keyExtractor={getUUIid}
-        data={enrichToDoListArray}
-        renderItem={renderItem}
+        data={toDoListStore.enrichedToDoList}
+        renderItem={renderItem(onEditItem)}
       />
-      <FloatingButton onPress={openModal} sign={buttonState} />
-      <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <EditModal
-          onPress={onPress}
-          closeModal={closeModal}
-          currentText={selectedItemRef.current?.text ?? ''}
-        />
-      </Modal>
+      <FloatingButton
+        onPress={onPressFloatingButton}
+        sign={toDoListStore.floatingButtonState}
+      />
       <TouchableOpacity style={styles.logoutButton} onPress={onPressLogout}>
         <Image source={LOGOUT_ICON} style={styles.logoutIcon} />
       </TouchableOpacity>
     </View>
   );
-}
+});
+
+export default FlatListToDoList;

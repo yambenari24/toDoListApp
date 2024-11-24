@@ -3,18 +3,15 @@ import React, {memo} from 'react';
 import {X_IMG} from '../../screens/toDoList/constant';
 import {useModal} from './useModal';
 import {styles} from '../addItemModal/styles';
-import {EditModalProps} from './types';
+import {EditModalNavigationProp} from '../../navigation';
+import {toDoListStore} from '../../store/toDoListStore';
 
 const EditModal = memo(function EditModal({
-  onPress,
-  closeModal,
-  currentText,
-}: EditModalProps) {
-  const {handleChangeText, handleAddItem, buttonTitle} = useModal({
-    onPress,
-    closeModal,
-    currentText,
-  });
+  navigation,
+}: {
+  navigation: EditModalNavigationProp;
+}) {
+  const {closeModal, onHandleChangeText, onPressModal} = useModal(navigation);
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
@@ -23,11 +20,11 @@ const EditModal = memo(function EditModal({
         </TouchableOpacity>
         <TextInput
           style={styles.inputContainer}
-          defaultValue={currentText}
-          onChangeText={handleChangeText}
+          defaultValue={toDoListStore.selectedItem?.text ?? ''}
+          onChangeText={onHandleChangeText}
         />
         <View style={styles.buttonContainer}>
-          <Button onPress={handleAddItem} title={buttonTitle} />
+          <Button onPress={onPressModal} title={'DONE'} />
         </View>
       </View>
     </View>

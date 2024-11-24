@@ -1,25 +1,27 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
+import {userStore} from '../store/userStore';
 
 export function useMainScreen() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-
   useEffect(() => {
     const checkAuthState = async () => {
       try {
         const userToken = await AsyncStorage.getItem('userToken');
         if (userToken) {
-          setIsLoggedIn(true);
+          userStore.setUserToken(userToken);
         } else {
-          setIsLoggedIn(false);
+          userStore.setUserToken(null);
         }
       } catch (error) {
         console.log(error);
-        setIsLoggedIn(false);
+        userStore.setUserToken(null);
       }
     };
     checkAuthState();
   }, []);
 
-  return {isLoggedIn};
+  const initScreen =
+    userStore.userToken === null ? 'Login' : 'FlatListToDoList';
+
+  return {initScreen};
 }
