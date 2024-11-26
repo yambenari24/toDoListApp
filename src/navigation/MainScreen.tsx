@@ -6,14 +6,23 @@ import {Login} from '../screens/login';
 import {EditModal} from '../widgets/editModal';
 import {observer} from 'mobx-react-lite';
 import {useMainScreen} from './useMainScreen';
+import useStore from './useStore';
 
 const Stack = createStackNavigator();
 
-const MainScreen = observer(() => {
-  const {initScreen} = useMainScreen();
+const MainScreen = () => {
+  useMainScreen();
+  const {initScreen} = useStore();
+  console.log(
+    'ttt\x1b[32m',
+    new Date().getMilliseconds(),
+    new Date().toLocaleTimeString(),
+    {initScreen},
+    '\x1b[0m',
+  );
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={initScreen}>
+      <Stack.Navigator initialRouteName={initScreen ?? 'Login'}>
         <Stack.Screen
           name="FlatListToDoList"
           component={FlatListToDoList}
@@ -37,6 +46,6 @@ const MainScreen = observer(() => {
       </Stack.Navigator>
     </NavigationContainer>
   );
-});
+};
 
 export default MainScreen;

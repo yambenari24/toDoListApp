@@ -9,7 +9,6 @@ import {
   PLUS,
   YES_BUTTON,
 } from '../screens/toDoList/constant';
-import {ToDoListRowProps} from '../screens/toDoList/components';
 import {Alert} from 'react-native';
 
 class ToDoListStore {
@@ -92,16 +91,6 @@ class ToDoListStore {
 
   get floatingButtonState() {
     return this.modalVisible ? MINUS : PLUS;
-  }
-
-  get enrichedToDoList(): ToDoListRowProps[] {
-    return this.items.map(item => ({
-      toDoListItem: item,
-      deleteItem: () => this.onShowDeleteAlert(item),
-      isOpen: this.openRow === item.uuid,
-      onSwipe: () => this.setOpenRow(item.uuid),
-      onEditItem: () => this.selectItem(item),
-    }));
   }
 }
 

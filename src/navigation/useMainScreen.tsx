@@ -19,9 +19,4 @@ export function useMainScreen() {
     };
     checkAuthState();
   }, []);
-
-  const initScreen =
-    userStore.userToken === null ? 'Login' : 'FlatListToDoList';
-
-  return {initScreen};
 }
