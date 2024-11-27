@@ -8,9 +8,9 @@ export function useModal(
 ) {
   const inputRef = useRef<string>(currentText);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     onPressCancel();
-  };
+  }, [onPressCancel]);
 
   const onHandleChangeText = useCallback(
     (text: string) => {
