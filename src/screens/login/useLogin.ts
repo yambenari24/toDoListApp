@@ -5,13 +5,14 @@ import {Alert} from 'react-native';
 import {runInAction} from 'mobx';
 import {LoginScreenNavigationProp} from '../../navigation';
 import {userStore} from '../../store/userStore';
+import {useCallback} from 'react';
 
 export function useLogin({
   navigation,
 }: {
   navigation: LoginScreenNavigationProp;
 }) {
-  const login = async (onSuccess: () => void): Promise<void> => {
+  const login = useCallback(async (onSuccess: () => void): Promise<void> => {
     try {
       if (!userStore.userName || !userStore.userPassword) {
         Alert.alert(
@@ -48,25 +49,25 @@ export function useLogin({
       console.error('Login Error:', error);
       Alert.alert('Login Failed', 'Something went wrong. Please try again.');
     }
-  };
+  }, []);
 
-  const handlePressConfirm = () => {
+  const handlePressConfirm = useCallback(() => {
     login(() => {
       navigation.navigate('FlatListToDoList');
     });
-  };
+  }, [login, navigation]);
 
-  const handleUsernameChange = (username: string) => {
+  const handleUsernameChange = useCallback((username: string) => {
     runInAction(() => {
       userStore.setUserName = username;
     });
-  };
+  }, []);
 
-  const handlePasswordChange = (password: string) => {
+  const handlePasswordChange = useCallback((password: string) => {
     runInAction(() => {
       userStore.setPassword = password;
     });
-  };
+  }, []);
 
   return {
     handlePressConfirm,
