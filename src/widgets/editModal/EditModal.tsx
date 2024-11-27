@@ -3,15 +3,20 @@ import React, {memo} from 'react';
 import {X_IMG} from '../../screens/toDoList/constant';
 import {useModal} from './useModal';
 import {styles} from '../addItemModal/styles';
-import {EditModalNavigationProp} from '../../navigation';
-import {toDoListStore} from '../../store/toDoListStore';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {NavigationParam} from '../../navigation';
 
-const EditModal = memo(function EditModal({
-  navigation,
-}: {
-  navigation: EditModalNavigationProp;
-}) {
-  const {closeModal, onHandleChangeText, onPressModal} = useModal(navigation);
+type EditModalRouteProp = RouteProp<NavigationParam, 'EditModal'>;
+
+const EditModal = () => {
+  const route = useRoute<EditModalRouteProp>();
+  const {currentText, onPressConfirm, onPressCancel} = route.params;
+
+  const {closeModal, onHandleChangeText, onPressButton, buttonTitle} = useModal(
+    currentText,
+    onPressConfirm,
+    onPressCancel,
+  );
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
@@ -20,15 +25,15 @@ const EditModal = memo(function EditModal({
         </TouchableOpacity>
         <TextInput
           style={styles.inputContainer}
-          defaultValue={toDoListStore.selectedItem?.text ?? ''}
+          defaultValue={currentText}
           onChangeText={onHandleChangeText}
         />
         <View style={styles.buttonContainer}>
-          <Button onPress={onPressModal} title={'DONE'} />
+          <Button onPress={onPressButton} title={buttonTitle} />
         </View>
       </View>
     </View>
   );
-});
+};
 
-export default EditModal;
+export default memo(EditModal);

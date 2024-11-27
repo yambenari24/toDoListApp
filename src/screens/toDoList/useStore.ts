@@ -3,14 +3,14 @@ import {reaction} from 'mobx';
 import {toDoListStore} from '../../store/toDoListStore';
 import {PLUS} from './constant';
 
-const useStore = () => {
+export const useStore = () => {
   const [floatingButtonSign, setFloatingButtonSign] = useState(PLUS);
   const [todoList, setTodoList] = useState(toDoListStore.items);
   const [openRow, setOpenRow] = useState(toDoListStore.openRow);
+  const [modalVisible, setModalVisible] = useState(
+    toDoListStore.isModalVisible,
+  );
 
-  // const [openRow, setOpenRow] = useState<string | null>(null);
-  // const [modalVisible, setModalVisible] = useState(false);
-  // const selectedItemRef = useRef<ToDoListItem | null>(null);
   useEffect(() => {
     const disposeTodoList = reaction(
       () => toDoListStore.items,
@@ -26,13 +26,18 @@ const useStore = () => {
       newOpenRow => setOpenRow(newOpenRow),
     );
 
+    const disposeModalVisible = reaction(
+      () => toDoListStore.isModalVisible,
+      newModalVisible => setModalVisible(newModalVisible),
+    );
+
     return () => {
       disposeFloatingButton();
       disposeTodoList();
       disposeOpenRow();
+      disposeModalVisible();
     };
   }, []);
 
-  return {floatingButtonSign, todoList, openRow};
+  return {floatingButtonSign, todoList, openRow, modalVisible};
 };
-export default useStore;

@@ -15,7 +15,7 @@ import {ToDoListRow} from './components';
 import {FloatingButton} from '../../ui/floatingButton';
 import {useNavigation} from '@react-navigation/native';
 import {LOGOUT_ICON} from './constant';
-import useStore from './useStore';
+import {useStore} from './useStore';
 
 const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => (
   <ToDoListRow

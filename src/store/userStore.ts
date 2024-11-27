@@ -1,60 +1,38 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {makeAutoObservable, runInAction} from 'mobx';
-import {Alert} from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+import {makeAutoObservable} from 'mobx';
 
 class UserStore {
-  userToken: string | null = null;
-  username: string = '';
-  password: string = '';
+  private userToken: string | null = null;
+  private username: string = '';
+  private password: string = '';
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setUserToken(token: string | null) {
+  // Directly expose the observable properties
+  get token(): string | null {
+    return this.userToken;
+  }
+
+  get userName(): string {
+    return this.username;
+  }
+
+  get userPassword(): string {
+    return this.password;
+  }
+
+  // Setters for updating observable state
+  set setUserToken(token: string | null) {
     this.userToken = token;
   }
 
-  clearUserToken() {
-    this.userToken = null;
+  set setUserName(username: string) {
+    this.username = username;
   }
 
-  setUserName(userName: string) {
-    this.username = userName;
-  }
-
-  setPassword(password: string) {
+  set setPassword(password: string) {
     this.password = password;
-  }
-
-  clearCredential() {
-    this.username = '';
-    this.password = '';
-  }
-
-  async login(onSuccess: () => void) {
-    try {
-      const userDoc = firestore().collection('users').doc(this.username);
-      const docSnapshot = await userDoc.get();
-
-      if (docSnapshot.exists) {
-        const userData = docSnapshot.data();
-        if (userData?.password === this.password) {
-          await AsyncStorage.setItem('userToken', 'authenticated');
-          runInAction(() => {});
-          onSuccess();
-        } else {
-          Alert.alert('Invalid Credentials');
-        }
-      } else {
-        Alert.alert('User does not exist');
-      }
-    } catch (error) {
-      Alert.alert('Something went wrong... try again');
-    } finally {
-      runInAction(() => {});
-    }
   }
 }
 

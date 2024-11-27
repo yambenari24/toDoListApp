@@ -3,11 +3,11 @@ import {reaction} from 'mobx';
 import {userStore} from '../store/userStore';
 
 const useStore = () => {
-  const [initScreen, setInitScreen] = useState(userStore.userToken);
+  const [initScreen, setInitScreen] = useState(userStore.token);
 
   useEffect(() => {
     const dispose = reaction(
-      () => userStore.userToken,
+      () => userStore.token,
       newToken => setInitScreen(newToken),
     );
 
