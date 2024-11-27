@@ -3,10 +3,8 @@ import React, {memo} from 'react';
 import {X_IMG} from '../../screens/toDoList/constant';
 import {useModal} from './useModal';
 import {styles} from '../addItemModal/styles';
-import {RouteProp, useRoute} from '@react-navigation/native';
-import {NavigationParam} from '../../navigation';
-
-type EditModalRouteProp = RouteProp<NavigationParam, 'EditModal'>;
+import {useRoute} from '@react-navigation/native';
+import {EditModalRouteProp} from './types';
 
 const EditModal = () => {
   const route = useRoute<EditModalRouteProp>();
