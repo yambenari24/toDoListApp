@@ -22,23 +22,7 @@ export function useLogin({
       }
 
       const userDoc = firestore().collection('users').doc(userStore.userName);
-
-      console.log(
-        'ttt\x1b[44m',
-        new Date().getMilliseconds(),
-        new Date().toLocaleTimeString(),
-        {userDoc},
-        '\x1b[0m',
-      );
       const docSnapshot = await userDoc.get();
-
-      console.log(
-        'ttt\x1b[44m',
-        new Date().getMilliseconds(),
-        new Date().toLocaleTimeString(),
-        {docSnapshot},
-        '\x1b[0m',
-      );
 
       if (docSnapshot.exists) {
         const userData = docSnapshot.data();
