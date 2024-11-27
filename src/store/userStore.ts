@@ -8,8 +8,6 @@ class UserStore {
   constructor() {
     makeAutoObservable(this);
   }
-
-  // Directly expose the observable properties
   get token(): string | null {
     return this.userToken;
   }
@@ -22,7 +20,6 @@ class UserStore {
     return this.password;
   }
 
-  // Setters for updating observable state
   set setUserToken(token: string | null) {
     this.userToken = token;
   }
