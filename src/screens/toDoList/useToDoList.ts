@@ -1,145 +1,36 @@
-import {useCallback, useMemo, useRef, useState} from 'react';
-import {ToDoListItem} from './index';
+import {useCallback, useMemo, useRef} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ToDoListScreenNavigationProp} from '../../navigation';
+import {toDoListStore} from '../../store/toDoListStore';
+import {ToDoListItem} from './types';
 import {Alert} from 'react-native';
 import {
   ALERT_BUTTON_SUBTITLE,
   ALERT_BUTTON_TITLE,
   CANCEL_BUTTON,
-  MINUS,
-  PLUS,
   YES_BUTTON,
 } from './constant';
 import {generateUniqueId} from './utils';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ToDoListScreenNavigationProp} from '../../navigation';
+import {useStore} from './useStore';
 
-export function useToDoList({
-  navigation,
-}: ToDoListScreenNavigationProp) {
-  const [toDoListArray, setToDoListArray] = useState<ToDoListItem[]>([]);
-  const [openRow, setOpenRow] = useState<string | null>(null);
-  const [modalVisible, setModalVisible] = useState(false);
+export function useToDoList(navigation: ToDoListScreenNavigationProp) {
+  const {floatingButtonSign, todoList, openRow} = useStore();
   const selectedItemRef = useRef<ToDoListItem | null>(null);
 
-  const openModal = useCallback(function handleOpenModel() {
-    setModalVisible(true);
-  }, []);
+  const onCloseModal = useCallback(() => {
+    toDoListStore.setModalVisible = false;
+    navigation.pop();
+  }, [navigation]);
 
-  const closeModal = useCallback(function handleCloseModal() {
-    setModalVisible(false);
-    selectedItemRef.current = null;
-  }, []);
-
-  const onItemAdd = useCallback(
-    function handleAddItem(text: string) {
-      const copyToDoListArray = [...toDoListArray];
-      const item: ToDoListItem = {text: text, uuid: generateUniqueId()};
-      copyToDoListArray.unshift(item);
-      setToDoListArray(copyToDoListArray);
-      selectedItemRef.current = null;
-    },
-    [toDoListArray],
-  );
-
-  const onItemDelete = useCallback(
+  const onDeleteItem = useCallback(
     function deleteItem(item: ToDoListItem) {
-      const copyToDoListArray = [...toDoListArray];
-      const indexToDelete = copyToDoListArray.findIndex(
-        task => task.uuid === item.uuid,
+      const newToDoList = todoList.filter(
+        (task: ToDoListItem) => task.uuid !== item.uuid,
       );
-      if (indexToDelete !== -1) {
-        copyToDoListArray.splice(indexToDelete, 1);
-      }
-      setToDoListArray(copyToDoListArray);
-      selectedItemRef.current = null;
+      toDoListStore.setItems = newToDoList;
     },
-    [toDoListArray],
+    [todoList],
   );
-
-  const handleRowSwipe = useCallback((rowId: string) => {
-    setOpenRow(rowId);
-  }, []);
-
-  const onShowDeleteAlert = useCallback(
-    function handleDeleteItem(item: ToDoListItem) {
-      Alert.alert(
-        ALERT_BUTTON_TITLE,
-        ALERT_BUTTON_SUBTITLE,
-        [
-          {
-            text: CANCEL_BUTTON,
-            onPress: () => {
-              handleRowSwipe(item.uuid);
-            },
-          },
-          {
-            text: YES_BUTTON,
-            onPress: () => {
-              onItemDelete(item);
-            },
-          },
-        ],
-        {cancelable: true},
-      );
-    },
-    [handleRowSwipe, onItemDelete],
-  );
-
-  function onEditItem(item: ToDoListItem) {
-    setModalVisible(true);
-    selectedItemRef.current = item;
-  }
-
-  const handleEditItem = useCallback(
-    function handleEditItem(newText: string) {
-      if (!selectedItemRef.current) {
-        return;
-      }
-
-      const copyArray = [...toDoListArray];
-      const indexToEdit = copyArray.findIndex(
-        task => task.uuid === selectedItemRef.current?.uuid,
-      );
-
-      if (indexToEdit !== -1) {
-        copyArray[indexToEdit] = {
-          ...copyArray[indexToEdit],
-          text: newText,
-        };
-        setToDoListArray(copyArray);
-        selectedItemRef.current = null;
-      }
-    },
-    [toDoListArray],
-  );
-
-  const buttonState = useMemo(() => {
-    return modalVisible ? MINUS : PLUS;
-  }, [modalVisible]);
-
-  const onPress = useMemo(() => {
-    return selectedItemRef.current === null ||
-      selectedItemRef.current?.text === ''
-      ? onItemAdd
-      : handleEditItem;
-  }, [handleEditItem, onItemAdd]);
-
-  const enrichToDoListArray = useMemo(() => {
-    return toDoListArray.map(item => ({
-      toDoListItem: item,
-      deleteItem: () => onShowDeleteAlert(item),
-      isOpen: openRow === item.uuid,
-      onSwipe: () => handleRowSwipe(item.uuid),
-      onEditItem: () => onEditItem(item),
-    }));
-  }, [handleRowSwipe, onShowDeleteAlert, openRow, toDoListArray]);
-
-  const onPressModal = useMemo(() => {
-    return selectedItemRef.current === null ||
-      selectedItemRef.current?.text === ''
-      ? onItemAdd
-      : handleEditItem;
-  }, [handleEditItem, onItemAdd, selectedItemRef]);
 
   const onPressLogout = useCallback(
     function onPressLogout() {
@@ -158,22 +49,96 @@ export function useToDoList({
     [navigation],
   );
 
+  const onShowDeleteAlert = useCallback(
+    (item: ToDoListItem) => {
+      Alert.alert(
+        ALERT_BUTTON_TITLE,
+        ALERT_BUTTON_SUBTITLE,
+        [
+          {
+            text: CANCEL_BUTTON,
+            onPress: () => {
+              toDoListStore.setOpenRow = item.uuid;
+            },
+          },
+          {
+            text: YES_BUTTON,
+            onPress: () => {
+              onDeleteItem(item);
+            },
+          },
+        ],
+        {cancelable: true},
+      );
+    },
+    [onDeleteItem],
+  );
+
+  const onAddItem = useCallback(
+    function onAddItem(itemText: string) {
+      const newItem: ToDoListItem = {uuid: generateUniqueId(), text: itemText};
+      todoList.unshift(newItem);
+      toDoListStore.setItems = todoList;
+      onCloseModal();
+    },
+    [onCloseModal, todoList],
+  );
+
+  const onEditItem = useCallback(
+    function editItem(updatedText: string) {
+      const index = todoList.findIndex(
+        item => item.uuid === selectedItemRef.current?.uuid,
+      );
+      if (index !== -1) {
+        todoList[index] = {...todoList[index], text: updatedText};
+        toDoListStore.setItems = todoList;
+        selectedItemRef.current = null;
+        onCloseModal();
+      }
+    },
+    [onCloseModal, todoList],
+  );
+
+  const onSelectItemToEdit = useCallback(
+    function onSelectItemToEdit(selectedItem: ToDoListItem) {
+      toDoListStore.setModalVisible = true;
+      selectedItemRef.current = selectedItem;
+      navigation.navigate('EditModal', {
+        onPressConfirm: onEditItem,
+        onPressCancel: onCloseModal,
+        currentText: selectedItem.text,
+      });
+    },
+    [navigation, onCloseModal, onEditItem],
+  );
+
+  const onSwipeRow = useCallback((uuid: string) => {
+    toDoListStore.setOpenRow = uuid;
+  }, []);
+
+  const onPressFloatingButton = useCallback(() => {
+    toDoListStore.setModalVisible = true;
+    navigation.navigate('EditModal', {
+      onPressConfirm: onAddItem,
+      onPressCancel: onCloseModal,
+      currentText: '',
+    });
+  }, [navigation, onAddItem, onCloseModal]);
+
+  const enrichToDoListArray = useMemo(() => {
+    return todoList.map(item => ({
+      toDoListItem: item,
+      deleteItem: () => onShowDeleteAlert(item),
+      isOpen: openRow === item.uuid,
+      onSwipe: () => onSwipeRow(item.uuid),
+      onEditItem: () => onSelectItemToEdit(item),
+    }));
+  }, [onSelectItemToEdit, onShowDeleteAlert, onSwipeRow, openRow, todoList]);
+
   return {
-    openModal,
-    closeModal,
-    modalVisible,
-    toDoListArray,
-    onItemAdd,
-    onShowDeleteAlert,
-    openRow,
-    handleRowSwipe,
-    buttonState,
-    enrichToDoListArray,
-    onEditItem,
-    selectedItemRef,
-    handleEditItem,
-    onPressModal,
-    onPress,
     onPressLogout,
+    onPressFloatingButton,
+    enrichToDoListArray,
+    floatingButtonSign,
   };
 }

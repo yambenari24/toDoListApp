@@ -3,7 +3,6 @@ import {
   FlatList,
   Image,
   ListRenderItem,
-  Modal,
   Text,
   TouchableOpacity,
   View,
@@ -14,35 +13,27 @@ import {getUUIid} from './utils';
 import {styles} from './styles';
 import {ToDoListRow} from './components';
 import {FloatingButton} from '../../ui/floatingButton';
-import {EditModal} from '../../widgets/editModal';
+import {useNavigation} from '@react-navigation/native';
 import {LOGOUT_ICON} from './constant';
-import {ToDoListScreenNavigationProp} from '../../navigation';
 
-const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => {
-  return (
-    <ToDoListRow
-      toDoListItem={item.toDoListItem}
-      deleteItem={item.deleteItem}
-      isOpen={item.isOpen}
-      onSwipe={item.onSwipe}
-      onEditItem={item.onEditItem}
-    />
-  );
-};
+const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => (
+  <ToDoListRow
+    toDoListItem={item.toDoListItem}
+    deleteItem={item.deleteItem}
+    isOpen={item.isOpen}
+    onSwipe={item.onSwipe}
+    onEditItem={item.onEditItem}
+  />
+);
 
-export default function FlatListToDoList({
-  navigation,
-}: ToDoListScreenNavigationProp) {
+const FlatListToDoList = () => {
+  const navigation = useNavigation();
   const {
-    openModal,
-    closeModal,
-    modalVisible,
-    buttonState,
+    floatingButtonSign,
     enrichToDoListArray,
-    selectedItemRef,
-    onPress,
     onPressLogout,
-  } = useToDoList({navigation});
+    onPressFloatingButton,
+  } = useToDoList(navigation);
 
   return (
     <View style={styles.container}>
@@ -52,17 +43,15 @@ export default function FlatListToDoList({
         data={enrichToDoListArray}
         renderItem={renderItem}
       />
-      <FloatingButton onPress={openModal} sign={buttonState} />
-      <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <EditModal
-          onPress={onPress}
-          closeModal={closeModal}
-          currentText={selectedItemRef.current?.text ?? ''}
-        />
-      </Modal>
+      <FloatingButton
+        onPress={onPressFloatingButton}
+        sign={floatingButtonSign}
+      />
       <TouchableOpacity style={styles.logoutButton} onPress={onPressLogout}>
         <Image source={LOGOUT_ICON} style={styles.logoutIcon} />
       </TouchableOpacity>
     </View>
   );
-}
+};
+
+export default FlatListToDoList;

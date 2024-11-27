@@ -3,18 +3,18 @@ import React, {memo} from 'react';
 import {X_IMG} from '../../screens/toDoList/constant';
 import {useModal} from './useModal';
 import {styles} from '../addItemModal/styles';
-import {EditModalProps} from './types';
+import {useRoute} from '@react-navigation/native';
+import {EditModalRouteProp} from './types';
 
-const EditModal = memo(function EditModal({
-  onPress,
-  closeModal,
-  currentText,
-}: EditModalProps) {
-  const {handleChangeText, handleAddItem, buttonTitle} = useModal({
-    onPress,
-    closeModal,
+const EditModal = () => {
+  const route = useRoute<EditModalRouteProp>();
+  const {currentText, onPressConfirm, onPressCancel} = route.params;
+
+  const {closeModal, onHandleChangeText, onPressButton, buttonTitle} = useModal(
     currentText,
-  });
+    onPressConfirm,
+    onPressCancel,
+  );
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
@@ -24,14 +24,14 @@ const EditModal = memo(function EditModal({
         <TextInput
           style={styles.inputContainer}
           defaultValue={currentText}
-          onChangeText={handleChangeText}
+          onChangeText={onHandleChangeText}
         />
         <View style={styles.buttonContainer}>
-          <Button onPress={handleAddItem} title={buttonTitle} />
+          <Button onPress={onPressButton} title={buttonTitle} />
         </View>
       </View>
     </View>
   );
-});
+};
 
-export default EditModal;
+export default memo(EditModal);
