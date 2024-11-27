@@ -29,10 +29,13 @@ const renderItem: ListRenderItem<ToDoListRowProps> = ({item}) => (
 
 const FlatListToDoList = () => {
   const navigation = useNavigation();
-  const {enrichToDoListArray, onPressLogout, onPressFloatingButton} =
-    useToDoList(navigation);
+  const {
+    floatingButtonSign,
+    enrichToDoListArray,
+    onPressLogout,
+    onPressFloatingButton,
+  } = useToDoList(navigation);
 
-  const {floatingButtonSign} = useStore();
   return (
     <View style={styles.container}>
       <Text style={styles.textHeader}>To Do List</Text>

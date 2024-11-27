@@ -14,7 +14,7 @@ import {generateUniqueId} from './utils';
 import {useStore} from './useStore';
 
 export function useToDoList(navigation: ToDoListScreenNavigationProp) {
-  const {todoList, openRow} = useStore();
+  const {floatingButtonSign, todoList, openRow} = useStore();
   const selectedItemRef = useRef<ToDoListItem | null>(null);
 
   const onCloseModal = useCallback(() => {
@@ -139,5 +139,6 @@ export function useToDoList(navigation: ToDoListScreenNavigationProp) {
     onPressLogout,
     onPressFloatingButton,
     enrichToDoListArray,
+    floatingButtonSign,
   };
 }
